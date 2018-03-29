@@ -1,0 +1,34 @@
+[
+  {
+    "avg": -0.5965750000000004,
+    "sd": 0.022148049098640966,
+    "options": {
+      "hitSoft17": false,
+      "surrender": false,
+      "doubleRange": [
+        0,
+        21
+      ],
+      "doubleAfterSplit": false,
+      "resplitAces": false,
+      "offerInsurance": true,
+      "numberOfDecks": 8,
+      "maxSplitHands": 4,
+      "count": {
+        "system": null,
+        "trueCount": null
+      },
+      "hitSplitedAce": false,
+      "EuropeanNoHoldCard": false,
+      "CSM": false,
+      "fiveDragon": false,
+      "charlie": false,
+      "blackjackPayout": 1.5,
+      "backBet": false,
+      "rolling": 0,
+      "numberOfPlayer": 1,
+      "backBetRatio": 0
+    },
+    "hands": 1000
+  }
+]
