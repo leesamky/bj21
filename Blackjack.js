@@ -503,11 +503,33 @@ function HouseEdge(numTrials,handsPerTrial,options){
 }
 var  verboseLog=false
 
-module.exports=HouseEdge
+// module.exports=HouseEdge
+
+let numTrials=10000
+let handsPerTrial=3000
+let gameOptions=GameOptions({
+    hitSoft17: false,
+    surrender: "late",
+    doubleRange:[0,21],
+    doubleAfterSplit: true,
+    resplitAces: false,
+    offerInsurance: false,
+    numberOfDecks: 6,
+    maxSplitHands: 4,
+    count: false,
+    hitSplitedAce:false,
+    EuropeanNoHoldCard:false,
+    CSM:false,
+    fiveDragon:false,//no yet
+    charlie:false,
+    blackjackPayout:1.5,
+    backBet:false,
+    rolling:0,
+    numberOfPlayer:1,
+    backBetRatio:0
+})
 
 
 
-
-
-// HouseEdge(numTrials,handsPerTrial,gameOptions)
+console.log(HouseEdge(numTrials,handsPerTrial,gameOptions))
 
