@@ -18,7 +18,7 @@ module.exports=function (playerCards,dealerCard,handValue,handCount,options){
     }
 
     if(handValue.soft){
-        
+
         switch(handValue.total){
 
             case 13:

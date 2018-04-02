@@ -14,23 +14,66 @@ module.exports=function (playerCards, dealerCard, handValue, handCount, dealerCh
     if(handValue.soft){
         return null
     }
+
+
     //Fab Four
-    else if(canSurrender&&(handValue.total===15)&&(dealerCard===9)&&(options.count.trueCount>=2)){
-        return 'surrender'
+
+    else if(options.surrender==='late'){
+        if(handValue.total===14){
+            if((dealerCard===10)&&(options.count.trueCount>=3)){
+                return 'surrender'
+            }
+
+        }else if(handValue.total===15){
+            if((dealerCard===9)&&(options.count.trueCount>=2)){
+                return 'surrender'
+            }else if((dealerCard===10)&&(options.count.trueCount<0)){
+                return 'hit'
+            }else if((dealerCard===1)&&(options.count.trueCount>=2)){
+                return 'surrender'
+            }
+        }else if(handValue.total===16){
+            if((dealerCard===9)&&(options.count.trueCount<0)){
+                return 'hit'
+            }else if((dealerCard===10)&&(options.count.trueCount<-3)){
+                return 'hit'
+            }else if((dealerCard===1)&&(options.count.trueCount<-2)){
+                return 'hit'
+            }else if((dealerCard===8)&&(options.count.trueCount>=5)){
+                return 'surrender'
+            }
+        }
     }
 
-    else if(canSurrender&&(handValue.total===15)&&(dealerCard===10)&&(options.count.trueCount<0)){
-        return 'hit'
-    }
-
-    else if(canSurrender&&(handValue.total===14)&&(dealerCard===10)&&(options.count.trueCount>=3)){
-        return 'surrender'
-    }
-    else if(canSurrender&&(handValue.total===15)&&(dealerCard===1)&&(options.hitSoft17===false)&&(options.count.trueCount>=2)){//question
-        return 'surrender'
-    }
-    else if(canSurrender&&(handValue.total===15)&&(dealerCard===1)&&(options.hitSoft17)&&(options.count.trueCount>=-1)){//question
-        return 'surrender'
+    else if(_.includes(options.surrender,'early')){
+        if(dealerCard===9){
+            if(handValue.total===15&&(options.count.trueCount>=2)){
+                return 'surrender'
+            }else if(handValue.total===16&&(options.count.trueCount<0)){
+                return 'hit'
+            }
+        }else if(dealerCard===10){
+            if(handValue.total===13&&(options.count.trueCount>=3)){
+                return 'surrender'
+            }
+            else if(handValue.total===14&&(options.count.trueCount)<0){
+                return 'hit'
+            }
+            else if(handValue.total===15&&(options.count.trueCount)<-2){
+                return 'hit'
+            }
+        }
+        if(options.surrender==='earlyA'){
+            if(dealerCard===1){
+                if(handValue.total===5&&(options.count.trueCount<0)){
+                    return 'hit'
+                }else if(handValue.total===6&&(options.count.trueCount<-3)){
+                    return 'hit'
+                }else if(handValue.total===7&&(options.count.trueCount<-3)){
+                    return 'hit'
+                }
+            }
+        }
     }
 
     //Illustrious 18

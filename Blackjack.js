@@ -16,7 +16,23 @@ function Shuffle(){
 }
 var initialBet=100
 
+const record={}
+function saveRecord(dealer,player,result,trueCount){
+    if(record[[dealer,player]]===undefined){
+        record[[dealer,player]]={}
+    }else{
+        if(record[[dealer,player]][trueCount]===undefined){
+            record[[dealer,player]][trueCount]={
+                result:result,
+                hand:1
+            }
+        }else{
+            record[[dealer,player]][trueCount].result+=result
+            record[[dealer,player]][trueCount].hand+=1
 
+        }
+    }
+}
 
 
 
@@ -318,6 +334,22 @@ function RunAGame(options){
             playerHand.push(hand)
             let playerBlackjack=(playerHand.length===1)&&(playerHand[0].cards.length===2)&&(HandTotal(playerHand[0].cards).total===21)
 
+
+
+            //test code
+            // if(_.includes([1,9,10],dealerCards[0])&&(_.includes([5,6,7,12,13,14,15,16,17,18],HandTotal(playerHand[0].cards).total))&&HandTotal(playerHand[0].cards).soft===false){
+            //
+            // }else{
+            //     return 0
+            // }
+
+
+
+
+
+
+            //end of test code
+
             Log(`inital two player cards:   -player ${playerHand[0].cards}, -dealer one card ${dealerCards} `)
             if(dealerCards[0]===1&&!playerBlackjack){
                 if(options.offerInsurance&&options.count&&options.count.trueCount>=3){
@@ -355,6 +387,10 @@ function RunAGame(options){
         for(let player=0;player<options.numberOfPlayer;player++){
             win+=EvaluateHand(players[player],dealerCards,options)
         }
+
+        //test code
+
+        // saveRecord(dealerCards[0],HandTotal(players[0][0].cards.slice(0,2)).total,win,_.toInteger(options.count.trueCount))
 
         return win
 
@@ -506,19 +542,19 @@ var  verboseLog=false
 // module.exports=HouseEdge
 
 let numTrials=10000
-let handsPerTrial=3000
+let handsPerTrial=10000
 let gameOptions=GameOptions({
     hitSoft17: false,
-    surrender: "late",
+    surrender: 'earlyA',
     doubleRange:[0,21],
     doubleAfterSplit: true,
-    resplitAces: false,
+    resplitAces: true,
     offerInsurance: false,
     numberOfDecks: 6,
     maxSplitHands: 4,
-    count: false,
+    count: {system:'HiLo',trueCount:0},
     hitSplitedAce:false,
-    EuropeanNoHoldCard:false,
+    EuropeanNoHoldCard:true,
     CSM:false,
     fiveDragon:false,//no yet
     charlie:false,
@@ -531,5 +567,15 @@ let gameOptions=GameOptions({
 
 
 
-console.log(HouseEdge(numTrials,handsPerTrial,gameOptions))
+console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
+// console.log(record)
+
+// _.forEach(record,function(obj,key){
+//     _.forEach(obj,function(v,k){
+//         record[key][k]=v.result/v.hand
+//     })
+//
+// })
+
+// console.log(record)
 
