@@ -18,9 +18,7 @@ module.exports=function (playerCards,dealerCard,handValue,handCount,options){
     }
 
     if(handValue.soft){
-        if(options.EuropeanNoHoldCard){
-            return false
-        }
+        
         switch(handValue.total){
 
             case 13:
