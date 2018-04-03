@@ -18,7 +18,8 @@ module.exports=function (options){
         backBet:false,
         rolling:0,
         numberOfPlayer:1,
-        backBetRatio:0
+        backBetRatio:0,
+        adjust:false
 
     }
 
@@ -121,6 +122,10 @@ module.exports=function (options){
         if (options.hasOwnProperty("backBetRatio"))
         {
             playerOptions.backBetRatio = options.backBetRatio;
+        }
+        if (options.hasOwnProperty("adjust"))
+        {
+            playerOptions.adjust = options.adjust;
         }
 
 

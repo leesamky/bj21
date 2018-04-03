@@ -542,27 +542,28 @@ var  verboseLog=false
 // module.exports=HouseEdge
 
 let numTrials=10000
-let handsPerTrial=10000
+let handsPerTrial=4000
 let gameOptions=GameOptions({
     hitSoft17: false,
-    surrender: 'earlyA',
-    doubleRange:[0,21],
+    surrender: false,
+    doubleRange:[9,11],
     doubleAfterSplit: true,
-    resplitAces: true,
+    resplitAces: false,
     offerInsurance: false,
     numberOfDecks: 6,
-    maxSplitHands: 4,
+    maxSplitHands: 3,
     count: {system:'HiLo',trueCount:0},
     hitSplitedAce:false,
     EuropeanNoHoldCard:true,
-    CSM:false,
+    CSM:true,
     fiveDragon:false,//no yet
     charlie:false,
     blackjackPayout:1.5,
     backBet:false,
     rolling:0,
     numberOfPlayer:1,
-    backBetRatio:0
+    backBetRatio:0,
+    adjust:false
 })
 
 
