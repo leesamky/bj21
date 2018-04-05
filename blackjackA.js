@@ -603,7 +603,7 @@ let gameOptions=GameOptions({
     blackjackPayout:1.5,
     backBet:false,
     rolling:0,
-    numberOfPlayer:1,
+    numberOfPlayer:4,
     backBetRatio:0,
     adjust:false
 })

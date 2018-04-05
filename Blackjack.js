@@ -46,14 +46,16 @@ function Log(text){
 const HandTotal=require('./Points')
 
 
-function DealCard(){
+function DealCard(show=true){
     let card=deck.pop()
-
-    if((card>=2)&&(card<=6)){
-        RC++
-    }else if((card===1)||(card===10)){
-        RC--
+    if(show){
+        if((card>=2)&&(card<=6)){
+            RC++
+        }else if((card===1)||(card===10)){
+            RC--
+        }
     }
+
     return card
 }
 
@@ -326,9 +328,21 @@ function RunAGame(options){
 
 
     if(options.EuropeanNoHoldCard){
+        const obj={
+
+            players:[]
+
+        }
+        if(options.count){
+            obj.TC=RC / (deck.length / 52)
+            obj.RC=RC
+        }
+        obj.cardsLeft=deck.length
         const dealerCards=[]
 
         dealerCards.push(DealCard())//only one card
+
+        obj.dealer=dealerCards
         const players=[]
 
 
@@ -337,10 +351,19 @@ function RunAGame(options){
 
         let dealerNeedContinue=false
         for(let player=0;player<options.numberOfPlayer;player++){
+            const playerObj={
+                playerHands:[]
+            }
             const playerHand=[]
             const hand={actingBet:betAmount[player],backBet:betAmount[player]*options.backBetRatio,cards:[]}
             hand.cards.push(DealCard())
             hand.cards.push(DealCard())
+            if(options.count){
+                let TC=(RC / (deck.length / 52)).toFixed(4)
+                playerObj.TC=TC
+                playerObj.RC=RC
+                options.count.trueCount=TC
+            }
             playerHand.push(hand)
             let playerBlackjack=(playerHand.length===1)&&(playerHand[0].cards.length===2)&&(HandTotal(playerHand[0].cards).total===21)
 
@@ -358,6 +381,7 @@ function RunAGame(options){
             let bust=true
             PlayThePlayer(playerHand,dealerCards[0],options)
             players.push(playerHand)
+            playerObj.playerHands.push(playerHand)
 
             for(let hand=0;hand<playerHand.length;hand++){
 
@@ -370,12 +394,14 @@ function RunAGame(options){
             }else{
                 dealerNeedContinue=true
             }
+            obj.players.push(playerObj)
 
         }
 
         if(dealerNeedContinue){
             dealerCards.push(DealCard())//deal another card
             PlayDealerHand(dealerCards,options)
+            obj.dealer=dealerCards
 
         }
         let win=0
@@ -383,9 +409,9 @@ function RunAGame(options){
         for(let player=0;player<options.numberOfPlayer;player++){
             win+=EvaluateHand(players[player],dealerCards,options)
         }
-
-
-        return win
+        obj.win=win
+        // console.log(JSON.stringify(obj,null,2))
+        return obj
 
 
 
@@ -411,7 +437,7 @@ function RunAGame(options){
         obj.cardsLeft=deck.length
         const dealerCards=[]
         dealerCards.push(DealCard())
-        dealerCards.push(DealCard())
+        dealerCards.push(DealCard(false))
 
         //
         obj.dealer=dealerCards
@@ -438,6 +464,7 @@ function RunAGame(options){
             //
 
             if(options.count){
+
                 let TC=(RC / (deck.length / 52)).toFixed(4)
                 playerObj.TC=TC
                 playerObj.RC=RC
@@ -479,6 +506,11 @@ function RunAGame(options){
         }
 
         if(dealerNeedContinue){
+            if((dealerCards[1]>=2)&&(dealerCards[1]<=6)){
+                RC++
+            }else if((dealerCards[1]===1)||(dealerCards[1]===10)){
+                RC--
+            }
             PlayDealerHand(dealerCards,options)
             obj.dealer=dealerCards
 
@@ -574,8 +606,8 @@ var  verboseLog=false
 
 // module.exports=HouseEdge
 
-let numTrials=100000
-let handsPerTrial=50000
+let numTrials=1000
+let handsPerTrial=10000
 let gameOptions=GameOptions({
     hitSoft17: false,
     surrender: 'late',
@@ -585,19 +617,19 @@ let gameOptions=GameOptions({
     offerInsurance: false,
     numberOfDecks: 6,
     maxSplitHands: 4,
-    // count: {system:'HiLo',trueCount:0},
-    count:false,
+    count: {system:'HiLo',trueCount:0},
+    // count:false,
     hitSplitedAce:false,
     EuropeanNoHoldCard:false,
-    CSM:false,
+    CSM:true,
     fiveDragon:false,//no yet
     charlie:false,
     blackjackPayout:1.5,
     backBet:false,
     rolling:0,
-    numberOfPlayer:1,
+    numberOfPlayer:4,
     backBetRatio:0,
-    adjust:false
+    adjust:true
 })
 
 
