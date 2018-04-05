@@ -7,28 +7,44 @@ const BackPlayer=require('./Back_player')
 
 var deck=[]
 var CSMDeck=[]
-var RC=0
+var hiLoCount=0
 
 
 function Shuffle(){
-    RC=0
+    hiLoCount=0
     deck=_.shuffle(CSMDeck)
 }
 var initialBet=100
 
-const record={}
-function saveRecord(dealer,player,result,trueCount){
-    if(record[[dealer,player]]===undefined){
-        record[[dealer,player]]={}
+const recordAll={}
+const recordByTC={}
+
+function saveRecordAll(dealer,player,result,hand=1){
+    if(recordAll[[dealer,player]]===undefined){
+        recordAll[[dealer,player]]={
+            result:result,
+            hand:hand
+        }
     }else{
-        if(record[[dealer,player]][trueCount]===undefined){
-            record[[dealer,player]][trueCount]={
+
+            recordAll[[dealer,player]].result+=result
+            recordAll[[dealer,player]].hand+=hand
+
+
+    }
+}
+function saveRecordByTC(dealer,player,result,trueCount,hand=1){
+    if(recordByTC[[dealer,player]]===undefined){
+        recordByTC[[dealer,player]]={}
+    }else{
+        if(recordByTC[[dealer,player]][trueCount]===undefined){
+            recordByTC[[dealer,player]][trueCount]={
                 result:result,
-                hand:1
+                hand:hand
             }
         }else{
-            record[[dealer,player]][trueCount].result+=result
-            record[[dealer,player]][trueCount].hand+=1
+            recordByTC[[dealer,player]][trueCount].result+=result
+            recordByTC[[dealer,player]][trueCount].hand+=hand
 
         }
     }
@@ -50,9 +66,9 @@ function DealCard(){
     let card=deck.pop()
 
     if((card>=2)&&(card<=6)){
-        RC++
+        hiLoCount++
     }else if((card===1)||(card===10)){
-        RC--
+        hiLoCount--
     }
     return card
 }
@@ -76,7 +92,7 @@ function InitializeDeck(numberOfDecks){
         }
     }
     shuffle(deck)
-    RC=0
+    hiLoCount=0
 
 }
 
@@ -277,19 +293,9 @@ function EvaluateHand(playerHand, dealerCards, options){
 }
 
 function RunAGame(options){
-
-
-    let betAmount=[initialBet]//config the bet
-    // console.log(betAmount)
-    if(betAmount.length<options.numberOfPlayer){
-        betAmount=[]
-        for(let player=0;player<options.numberOfPlayer;player++){
-            betAmount.push(initialBet)
-        }
-    }// if player more than one then put every one same bet as default
-
+    let betAmount=initialBet
     let trueCount=0
-    
+
 
     //check if we need to reshuffle
 
@@ -307,7 +313,7 @@ function RunAGame(options){
 
     //If using counting system, set up here
     if(options.count&&(options.count.system==='HiLo')) {
-        trueCount = RC / (deck.length / 52)
+        trueCount = hiLoCount / (deck.length / 52)
         options.count.trueCount = trueCount
         Log(`True Count: ${trueCount.toFixed(2)}`)
 
@@ -338,13 +344,27 @@ function RunAGame(options){
         let dealerNeedContinue=false
         for(let player=0;player<options.numberOfPlayer;player++){
             const playerHand=[]
-            const hand={actingBet:betAmount[player],backBet:betAmount[player]*options.backBetRatio,cards:[]}
+            const hand={actingBet:betAmount,backBet:betAmount*options.backBetRatio,cards:[]}
             hand.cards.push(DealCard())
             hand.cards.push(DealCard())
             playerHand.push(hand)
             let playerBlackjack=(playerHand.length===1)&&(playerHand[0].cards.length===2)&&(HandTotal(playerHand[0].cards).total===21)
 
 
+
+            //test code
+            // if(_.includes([1,9,10],dealerCards[0])&&(_.includes([5,6,7,12,13,14,15,16,17,18],HandTotal(playerHand[0].cards).total))&&HandTotal(playerHand[0].cards).soft===false){
+            //
+            // }else{
+            //     return 0
+            // }
+
+
+
+
+
+
+            //end of test code
 
             Log(`inital two player cards:   -player ${playerHand[0].cards}, -dealer one card ${dealerCards} `)
             if(dealerCards[0]===1&&!playerBlackjack){
@@ -384,6 +404,9 @@ function RunAGame(options){
             win+=EvaluateHand(players[player],dealerCards,options)
         }
 
+        //test code
+
+        // saveRecord(dealerCards[0],HandTotal(players[0][0].cards.slice(0,2)).total,win,_.toInteger(options.count.trueCount))
 
         return win
 
@@ -395,54 +418,28 @@ function RunAGame(options){
 
 
 
-
+        //check if player has bj,surrender or bust, then dealer does not continue
 
     }else{
         //the order needs to be observed
-        const obj={
-
-            players:[]
-
-        }
-        if(options.count){
-            obj.TC=RC / (deck.length / 52)
-            obj.RC=RC
-        }
-        obj.cardsLeft=deck.length
         const dealerCards=[]
         dealerCards.push(DealCard())
         dealerCards.push(DealCard())
 
-        //
-        obj.dealer=dealerCards
-
         let dealerBlackjack=(dealerCards.length===2)&&(HandTotal(dealerCards).total===21)
+        if(dealerBlackjack){
+            return 0
+        }
         const players=[]
-        let dealerNeedContinue=false
+        let dealerNeedContinue=true
         for(let player=0;player<options.numberOfPlayer;player++){
-            //
-            const playerObj={
-                playerHands:[]
-            }
-
-
-
-
             const playerHand=[]
-            const hand={actingBet:betAmount[player],backBet:betAmount[player]*options.backBetRatio,cards:[]}
+            const hand={actingBet:betAmount,backBet:betAmount*options.backBetRatio,cards:[]}
             hand.cards.push(DealCard())
             hand.cards.push(DealCard())
-            
-            
-            
-            //
-
-            if(options.count){
-                let TC=(RC / (deck.length / 52)).toFixed(4)
-                playerObj.TC=TC
-                playerObj.RC=RC
-                options.count.trueCount=TC
-            }
+            // if(hand.cards[0]!==hand.cards[1]){
+            //     return 0
+            // }
             playerHand.push(hand)
             let playerBlackjack=(playerHand.length===1)&&(playerHand[0].cards.length===2)&&(HandTotal(playerHand[0].cards).total===21)
 
@@ -462,25 +459,22 @@ function RunAGame(options){
 
 
             players.push(playerHand)
-            playerObj.playerHands.push(playerHand)
 
             for(let hand=0;hand<playerHand.length;hand++){
 
-                if((playerHand[hand].insurance!==undefined)||((HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
+                if(playerHand[hand].insurance||((HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
                     bust=false
                 }
             }
             if(bust){
-                Log(`The ${player+1} all  hands bust or surrender`)
+                Log(`The ${player+1} all  hands bust`)
             }else{
                 dealerNeedContinue=true
             }
-            obj.players.push(playerObj)
         }
 
         if(dealerNeedContinue){
             PlayDealerHand(dealerCards,options)
-            obj.dealer=dealerCards
 
         }
         let win=0
@@ -488,13 +482,20 @@ function RunAGame(options){
         for(let player=0;player<options.numberOfPlayer;player++){
             win+=EvaluateHand(players[player],dealerCards,options)
         }
-        obj.win=win
 
+        if(players[0].length>1){//split
+            // console.log(dealerCards,players[0],win,players[0].length)
+            saveRecordAll(dealerCards[0],`${players[0][0].cards[0]}${players[0][0].cards[0]}`,win,1)
+        }else{
+            let playerPoints=HandTotal(players[0][0].cards.slice(0,2))
+            if(playerPoints.soft){
+                saveRecordAll(dealerCards[0],`S${playerPoints.total}`,win,1)
+            }else{
+                saveRecordAll(dealerCards[0],`H${playerPoints.total}`,win,1)
+            }
+        }
 
-
-        // console.log(JSON.stringify(obj,null,2))
-
-        return obj
+        return win
 
     }
 
@@ -552,7 +553,14 @@ function HouseEdge(numTrials,handsPerTrial,options){
         for (var i = 0; i < handsPerTrial; i++)
         {
             // Here's where you control and can evaluation different options
-            runningTotal += RunAGame(options).win;
+
+
+            try{
+                runningTotal += RunAGame(options);
+            }catch(error){
+                continue
+            }
+
             Log("Running total " + runningTotal);
             Log("");
         }
@@ -574,22 +582,22 @@ var  verboseLog=false
 
 // module.exports=HouseEdge
 
-let numTrials=100000
-let handsPerTrial=50000
+let numTrials=10000
+let handsPerTrial=400000
 let gameOptions=GameOptions({
     hitSoft17: false,
-    surrender: 'late',
+    surrender: false,
     doubleRange:[0,21],
     doubleAfterSplit: true,
-    resplitAces: true,
+    resplitAces: false,
     offerInsurance: false,
     numberOfDecks: 6,
-    maxSplitHands: 4,
+    maxSplitHands: 40,
     // count: {system:'HiLo',trueCount:0},
     count:false,
     hitSplitedAce:false,
     EuropeanNoHoldCard:false,
-    CSM:false,
+    CSM:true,
     fiveDragon:false,//no yet
     charlie:false,
     blackjackPayout:1.5,
@@ -603,6 +611,13 @@ let gameOptions=GameOptions({
 
 
 console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
+
+_.forEach(recordAll,function(obj,key){
+    recordAll[key]=obj.result/obj.hand
+
+})
+
+console.log(recordAll)
 // console.log(record)
 
 // _.forEach(record,function(obj,key){
