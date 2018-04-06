@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693741dd-49b4-4a2c-a3a4-06e0756a4aed" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/AdjustPlay.js" beforeDir="false" afterPath="$PROJECT_DIR$/AdjustPlay.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Blackjack.js" beforeDir="false" afterPath="$PROJECT_DIR$/Blackjack.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -19,22 +20,21 @@
       <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Blackjack.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1605">
-              <caret line="694" lean-forward="true" selection-start-line="691" selection-start-column="3" selection-end-line="694" />
+            <state relative-caret-position="435">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
               <folding>
-                <element signature="n#!!block;n#takeInsurance#0" />
-                <element signature="n#!!block;n#Shuffle#0" />
                 <element signature="n#!!block;n#saveRecord#0" />
                 <element signature="n#!!block;n#Log#0" />
                 <element signature="n#!!block;n#DealCard#0" />
                 <element signature="n#!!block;n#addRC#0" />
                 <element signature="n#!!block;n#PrintHand#0" />
-                <element signature="n#!!block;n#InitializeDeck#0" />
                 <element signature="n#!!block;n#PlayDealerHand#0" />
                 <element signature="n#!!block;n#PlayPlayerHand#0" />
                 <element signature="n#!!block;n#PlayThePlayer#0" />
                 <element signature="n#!!block;n#EvaluateHand#0" />
                 <element signature="n#!!block;n#RunAGame#0" />
+                <element signature="n#!!block;n#standardDeviation#0" />
+                <element signature="n#!!block;n#average#0" />
               </folding>
             </state>
           </provider>
@@ -128,8 +128,8 @@
         <option value="$PROJECT_DIR$/tmp.js" />
         <option value="$PROJECT_DIR$/blackjackA.js" />
         <option value="$PROJECT_DIR$/Suggestions.js" />
-        <option value="$PROJECT_DIR$/AdjustPlay.js" />
         <option value="$PROJECT_DIR$/GameOptions.js" />
+        <option value="$PROJECT_DIR$/AdjustPlay.js" />
         <option value="$PROJECT_DIR$/Blackjack.js" />
       </list>
     </option>
@@ -230,7 +230,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="340169000" />
+    <option name="totallyTimeSpent" value="343341000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
@@ -611,16 +611,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AdjustPlay.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="162" column="21" selection-start-line="162" selection-start-column="21" selection-end-line="162" selection-end-column="21" />
-          <folding>
-            <element signature="e#748#6070#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GameOptions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1980">
@@ -650,16 +640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Suggestions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="58" column="21" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
-          <folding>
-            <element signature="n#!!block;n#Points#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Points.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -667,24 +647,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/AdjustPlay.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="320" column="13" lean-forward="true" selection-start-line="320" selection-start-column="13" selection-end-line="320" selection-end-column="13" />
+          <folding>
+            <element signature="e#748#6070#0" />
+            <element signature="e#6113#9813#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Suggestions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="58" column="21" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
+          <folding>
+            <element signature="n#!!block;n#Points#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Blackjack.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1605">
-          <caret line="694" lean-forward="true" selection-start-line="691" selection-start-column="3" selection-end-line="694" />
+        <state relative-caret-position="435">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
           <folding>
-            <element signature="n#!!block;n#takeInsurance#0" />
-            <element signature="n#!!block;n#Shuffle#0" />
             <element signature="n#!!block;n#saveRecord#0" />
             <element signature="n#!!block;n#Log#0" />
             <element signature="n#!!block;n#DealCard#0" />
             <element signature="n#!!block;n#addRC#0" />
             <element signature="n#!!block;n#PrintHand#0" />
-            <element signature="n#!!block;n#InitializeDeck#0" />
             <element signature="n#!!block;n#PlayDealerHand#0" />
             <element signature="n#!!block;n#PlayPlayerHand#0" />
             <element signature="n#!!block;n#PlayThePlayer#0" />
             <element signature="n#!!block;n#EvaluateHand#0" />
             <element signature="n#!!block;n#RunAGame#0" />
+            <element signature="n#!!block;n#standardDeviation#0" />
+            <element signature="n#!!block;n#average#0" />
           </folding>
         </state>
       </provider>

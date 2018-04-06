@@ -244,6 +244,83 @@ module.exports=function (playerCards, dealerCard, handValue, handCount, dealerCh
             }
         }
     }
+    else if(options.count.system==='FELT'){
+        let TC=options.count.trueCount
+        if(TC>=0){//investigate if 0 is include
+            if(handValue.soft){
+                return null
+            }else{
+                if(canSurrender){
+                    if((dealerCard===10)&&(handValue.total===15)){
+                        return 'surrender'
+                    }else if((dealerCard===1)&&(handValue.total===15)){
+                        return 'surrender'
+                    }
+                }
+                if(canDouble){
+                    if((handValue.total===9)&&(dealerCard===2)){
+                        return 'double'
+                    }
+                    else if((handValue.total===11)&&(dealerCard===1)){
+                        return 'double'
+                    }
+                }
+                {
+                    if((handValue.total===16)&&(dealerCard===10)){
+                        return 'stand'
+                    }
+                    else if((handValue.total===13)&&(dealerCard===2)){
+                        return 'stand'
+                    }
+                    else if((handValue.total===12)&&(dealerCard===4)){
+                        return 'stand'
+                    }
+                    else if((handValue.total===12)&&(dealerCard===5)){
+                        return 'stand'
+                    }
+                    else if((handValue.total===12)&&(dealerCard===6)){
+                        return 'stand'
+                    }
+                }
+            }
+        }
+        if(TC>=6){
+            if(handValue.soft){
+                return null
+            }else{
+                if(canSurrender){
+                    if((dealerCard===9)&&(handValue.total===15)){
+                        return 'surrender'
+                    }else if((dealerCard===10)&&(handValue.total===14)){
+                        return 'surrender'
+                    }
+                }
+                if(canDouble){
+                    if((handValue.total===9)&&(dealerCard===7)){
+                        return 'double'
+                    }
+                    else if((handValue.total===8)&&(dealerCard===5)){
+                        return 'double'
+                    }
+                    else if((handValue.total===8)&&(dealerCard===6)){
+                        return 'double'
+                    }
+                }
+                {
+                    if((handValue.total===15)&&(dealerCard===10)){
+                        return 'stand'
+                    }
+                    else if((handValue.total===12)&&(dealerCard===2)){
+                        return 'stand'
+                    }
+                    else if((handValue.total===12)&&(dealerCard===3)){
+                        return 'stand'
+                    }
+
+                }
+            }
+        }
+    }
 
 
 

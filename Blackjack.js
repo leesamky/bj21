@@ -22,6 +22,11 @@ function TakeInsurance(options){
                     return true
                 }
             }
+            else if(options.count.system==='FELT'){
+                if(RC>=6){
+                    return true
+                }
+            }
 
 
         }
@@ -31,10 +36,8 @@ function TakeInsurance(options){
 
 
 function Shuffle(options){
-    if(options.count){
-        if(options.count.system==='HiLo'){
-            RC=0
-        }else if(options.count.system==='REKO'){
+    if(options.count!==undefined){
+        if(options.count.system==='REKO'){
             if(options.numberOfDecks===1){
                 RC=-1
             }else if(options.numberOfDecks===2){
@@ -100,6 +103,15 @@ function DealCard(options,show=true){
                     RC--
                 }
             }
+            else if(options.count.system==='FELT'){
+                if((card>=3)&&(card<=6)){
+                    RC+=2
+                }else if((card===1)||(card===10)){
+                    RC-=2
+                }else if((card===2)&&(card===7)){
+                    RC++
+                }
+            }
         }
 
     }
@@ -122,6 +134,15 @@ function AddRC(card,options){
                 RC--
             }
         }
+        else if(options.count.system==='FELT'){
+            if((card>=3)&&(card<=6)){
+                RC+=2
+            }else if((card===1)||(card===10)){
+                RC-=2
+            }else if((card===2)&&(card===7)){
+                RC++
+            }
+        }
     }
 }
 
@@ -135,16 +156,39 @@ function PrintHand(cards){
     return text
 }
 
-function InitializeDeck(numberOfDecks){
+function InitializeDeck(options){
+    // console.log('decks:',options.count)
     deck=[]
     const cards=[1,2,3,4,5,6,7,8,9,10,10,10,10]
-    for(let i=0;i<numberOfDecks;i++){
+    for(let i=0;i<options.numberOfDecks;i++){
         for(let j=0;j<4;j++){
             deck.push(...cards)
         }
     }
     shuffle(deck)
-    RC=0
+    if(options.count!==undefined){
+        if(options.count.system==='REKO'){
+
+            if(options.numberOfDecks===1){
+                RC=-1
+            }
+            else if(options.numberOfDecks===2){
+                RC=-5
+            }
+            else if(options.numberOfDecks===4){
+                RC=-12
+            }
+            else if(options.numberOfDecks===6){
+                RC=-20
+            }else if(options.numberOfDecks===8){
+                RC=-27
+            }
+        }else{
+            RC=0
+        }
+    }
+
+
 
 }
 
@@ -660,13 +704,11 @@ function average(data){
 function HouseEdge(numTrials,handsPerTrial,options){
     // Holds the aggregate result from each run of X hands
 
-    InitializeDeck(options.numberOfDecks)
+    InitializeDeck(options)
+    console.log(RC)
     CSMDeck=_.clone(deck)
 
     var simulationResults = [];
-
-// output file - if not defined we don't output
-    var outputFile = process.argv.slice(2)[0];
 
 // Snap the time
     console.time('PlayBlackJack');
@@ -700,9 +742,9 @@ var  verboseLog=false
 
 // module.exports=HouseEdge
 
-let numTrials=5000
-let handsPerTrial=10000
-let options={
+let numTrials=1
+let handsPerTrial=1000
+let OPTIONS={
     hitSoft17: false,
     surrender: 'late',
     doubleRange:[0,21],
@@ -726,8 +768,8 @@ let options={
     adjust:true,
     cutCard:20,
 }
-options.cutCard=Math.max(options.cutCard,options.numberOfPlayer*10)
-const gameOptions=GameOptions(options)
+OPTIONS.cutCard=Math.max(OPTIONS.cutCard,OPTIONS.numberOfPlayer*10)
+const gameOptions=GameOptions(OPTIONS)
 console.log(gameOptions)
 
 console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
