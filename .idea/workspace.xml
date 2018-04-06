@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693741dd-49b4-4a2c-a3a4-06e0756a4aed" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdjustPlay.js" beforeDir="false" afterPath="$PROJECT_DIR$/AdjustPlay.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Blackjack.js" beforeDir="false" afterPath="$PROJECT_DIR$/Blackjack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/GameOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Suggestions.js" beforeDir="false" afterPath="$PROJECT_DIR$/Suggestions.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,30 +15,49 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Blackjack.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="658" column="19" selection-start-line="658" selection-start-column="19" selection-end-line="658" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Points.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Points.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Blackjack.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="394">
+                  <caret line="716" column="16" selection-start-line="716" selection-start-column="16" selection-end-line="716" selection-end-column="16" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Points.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Points.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="330">
+                  <caret line="22" selection-start-line="22" selection-end-line="22" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Blackjack.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="282">
+                  <caret line="575" column="38" selection-start-line="575" selection-start-column="38" selection-end-line="575" selection-end-column="38" />
+                  <folding>
+                    <element signature="e#12057#15053#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>One Deck H17 Late Surrender</find>
       <find>oneDeckSplitsNoDASTrusy</find>
       <find>Two</find>
       <find>twoDecksH17Trusy</find>
@@ -72,6 +87,7 @@
       <find>DealCard</find>
       <find>count</find>
       <find>Shuffle()</find>
+      <find>players</find>
     </findStrings>
     <replaceStrings>
       <replace>splits</replace>
@@ -228,7 +244,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="334049000" />
+    <option name="totallyTimeSpent" value="337605000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
@@ -667,8 +683,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Blackjack.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="658" column="19" selection-start-line="658" selection-start-column="19" selection-end-line="658" selection-end-column="19" />
+        <state relative-caret-position="394">
+          <caret line="716" column="16" selection-start-line="716" selection-start-column="16" selection-end-line="716" selection-end-column="16" />
         </state>
       </provider>
     </entry>
