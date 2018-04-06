@@ -10,8 +10,25 @@ var CSMDeck=[]
 var RC=0
 
 
-function Shuffle(){
-    RC=0
+function Shuffle(options){
+    if(options.count){
+        if(options.count.system==='HiLo'){
+            RC=0
+        }else if(options.count.system==='REKO'){
+            if(options.numberOfDecks===1){
+                RC=-1
+            }else if(options.numberOfDecks===2){
+                RC=-5
+            }else if(options.numberOfDecks===4){
+                RC=-12
+            }else if(options.numberOfDecks===6){
+                RC=-20
+            }else if(options.numberOfDecks===8){
+                RC=-27
+            }
+        }
+    }
+
     deck=_.shuffle(CSMDeck)
 }
 var initialBet=100
@@ -46,17 +63,46 @@ function Log(text){
 const HandTotal=require('./Points')
 
 
-function DealCard(show=true){
+function DealCard(options,show=true){
     let card=deck.pop()
     if(show){
-        if((card>=2)&&(card<=6)){
-            RC++
-        }else if((card===1)||(card===10)){
-            RC--
+        if(options.count){
+            if(options.count.system==='HiLo'){
+                if((card>=2)&&(card<=6)){
+                    RC++
+                }else if((card===1)||(card===10)){
+                    RC--
+                }
+            }else if(options.count.system==='REKO'){
+                if((card>=2)&&(card<=7)){
+                    RC++
+                }else if((card===1)||(card===10)){
+                    RC--
+                }
+            }
         }
+
     }
 
     return card
+}
+
+function AddRC(card,options){
+    if(options.count){
+        if(options.count.system==='HiLo'){
+            if((card>=2)&&(card<=6)){
+                RC++
+            }else if((card===1)||(card===10)){
+                RC--
+            }
+        }else if(options.count.system==='REKO'){
+            if((card>=2)&&(card<=7)){
+                RC++
+            }else if((card===1)||(card===10)){
+                RC--
+            }
+        }
+    }
 }
 
 function PrintHand(cards){
@@ -86,7 +132,7 @@ function PlayDealerHand(dealerCards,options){
     let dealerTotal=HandTotal(dealerCards)
 
     while((dealerTotal.total<17)||((dealerTotal.total===17)&& (dealerTotal.soft) &&(options.hitSoft17))){
-        dealerCards.push(DealCard())
+        dealerCards.push(DealCard(options))
         dealerTotal=HandTotal(dealerCards)
     }
     return dealerTotal
@@ -113,12 +159,12 @@ function PlayPlayerHand(playerCards,dealerCard,handCount,dealerCheckedBlackJack,
                 break;
 
             case 'double':
-                playerCards.push(DealCard())
+                playerCards.push(DealCard(options))
                 return 'double'
                 break
 
             case 'hit':
-                playerCards.push(DealCard())
+                playerCards.push(DealCard(options))
                 Log('hit the hand. The player hands now is '+playerCards+ ' player total:'+HandTotal(playerCards).total)
                 if(HandTotal(playerCards).total>21){
                     return 'bust'
@@ -152,7 +198,7 @@ function PlayThePlayer(playerHand,dealerCard,options){
 
                 if(playerHand.length===options.maxSplitHands){
                     Log('You reached the max number of hands with those aces, hit on [A,A]')
-                    playerHand[handCount].cards.push(DealCard())
+                    playerHand[handCount].cards.push(DealCard(options))
                 }
             }
 
@@ -177,8 +223,8 @@ function PlayThePlayer(playerHand,dealerCard,options){
                 }
             }
             hand.cards.push(playerHand[handCount].cards.pop())
-            hand.cards.push(DealCard())
-            playerHand[handCount].cards.push(DealCard())
+            hand.cards.push(DealCard(options))
+            playerHand[handCount].cards.push(DealCard(options))
             playerHand.push(hand)
 
             //redo this hand in case continue to hit
@@ -296,21 +342,22 @@ function RunAGame(options){
     //check if we need to reshuffle
 
     if(options.CSM){
-        Shuffle()
+        Shuffle(options)
         Log('Shuffle')
         Log('first ten cards in the deck:',deck.slice(0,10),deck.length)
     }else{
-        if(deck.length<Math.max(25,13*options.numberOfDecks)){//was 13
+        if(deck.length<Math.max(options.cutCard,options.numberOfPlayer*10)){//was 13
             Log('Shuffle')
-            Shuffle()
+            Shuffle(options)
         }
     }
 
 
     //If using counting system, set up here
-    if(options.count&&(options.count.system==='HiLo')) {
+    if(options.count) {
         trueCount = RC / (deck.length / 52)
         options.count.trueCount = trueCount
+        options.count.RC=RC
         Log(`True Count: ${trueCount.toFixed(2)}`)
 
     }
@@ -340,7 +387,7 @@ function RunAGame(options){
         obj.cardsLeft=deck.length
         const dealerCards=[]
 
-        dealerCards.push(DealCard())//only one card
+        dealerCards.push(DealCard(options))//only one card
 
         obj.dealer=dealerCards
         const players=[]
@@ -356,8 +403,8 @@ function RunAGame(options){
             }
             const playerHand=[]
             const hand={actingBet:betAmount[player],backBet:betAmount[player]*options.backBetRatio,cards:[]}
-            hand.cards.push(DealCard())
-            hand.cards.push(DealCard())
+            hand.cards.push(DealCard(options))
+            hand.cards.push(DealCard(options))
             if(options.count){
                 let TC=(RC / (deck.length / 52)).toFixed(4)
                 playerObj.TC=TC
@@ -399,7 +446,7 @@ function RunAGame(options){
         }
 
         if(dealerNeedContinue){
-            dealerCards.push(DealCard())//deal another card
+            dealerCards.push(DealCard(options))//deal another card
             PlayDealerHand(dealerCards,options)
             obj.dealer=dealerCards
 
@@ -407,7 +454,9 @@ function RunAGame(options){
         let win=0
 
         for(let player=0;player<options.numberOfPlayer;player++){
-            win+=EvaluateHand(players[player],dealerCards,options)
+            let gain=EvaluateHand(players[player],dealerCards,options)
+            obj.players[player].win=gain
+            win+=gain
         }
         obj.win=win
         // console.log(JSON.stringify(obj,null,2))
@@ -436,8 +485,8 @@ function RunAGame(options){
         }
         obj.cardsLeft=deck.length
         const dealerCards=[]
-        dealerCards.push(DealCard())
-        dealerCards.push(DealCard(false))
+        dealerCards.push(DealCard(options))
+        dealerCards.push(DealCard(options,false))
 
         //
         obj.dealer=dealerCards
@@ -456,8 +505,8 @@ function RunAGame(options){
 
             const playerHand=[]
             const hand={actingBet:betAmount[player],backBet:betAmount[player]*options.backBetRatio,cards:[]}
-            hand.cards.push(DealCard())
-            hand.cards.push(DealCard())
+            hand.cards.push(DealCard(options))
+            hand.cards.push(DealCard(options))
             
             
             
@@ -469,6 +518,7 @@ function RunAGame(options){
                 playerObj.TC=TC
                 playerObj.RC=RC
                 options.count.trueCount=TC
+                options.count.RC=RC
             }
             playerHand.push(hand)
             let playerBlackjack=(playerHand.length===1)&&(playerHand[0].cards.length===2)&&(HandTotal(playerHand[0].cards).total===21)
@@ -506,11 +556,9 @@ function RunAGame(options){
         }
 
         if(dealerNeedContinue){
-            if((dealerCards[1]>=2)&&(dealerCards[1]<=6)){
-                RC++
-            }else if((dealerCards[1]===1)||(dealerCards[1]===10)){
-                RC--
-            }
+            AddRC(dealerCards[1],options)
+
+
             PlayDealerHand(dealerCards,options)
             obj.dealer=dealerCards
 
@@ -518,7 +566,9 @@ function RunAGame(options){
         let win=0
 
         for(let player=0;player<options.numberOfPlayer;player++){
-            win+=EvaluateHand(players[player],dealerCards,options)
+            let gain=EvaluateHand(players[player],dealerCards,options)
+            obj.players[player].win=gain
+            win+=gain
         }
         obj.win=win
 
@@ -606,7 +656,7 @@ var  verboseLog=false
 
 // module.exports=HouseEdge
 
-let numTrials=1000
+let numTrials=20000
 let handsPerTrial=10000
 let gameOptions=GameOptions({
     hitSoft17: false,
@@ -617,22 +667,23 @@ let gameOptions=GameOptions({
     offerInsurance: false,
     numberOfDecks: 6,
     maxSplitHands: 4,
-    count: {system:'HiLo',trueCount:0},
+    count: {system:'REKO',trueCount:0,RC:0},
     // count:false,
     hitSplitedAce:false,
     EuropeanNoHoldCard:false,
-    CSM:true,
+    CSM:false,
     fiveDragon:false,//no yet
     charlie:false,
     blackjackPayout:1.5,
     backBet:false,
     rolling:0,
-    numberOfPlayer:4,
+    numberOfPlayer:1,
     backBetRatio:0,
-    adjust:true
+    adjust:true,
+    cutCard:20,
 })
 
-
+console.log(gameOptions)
 
 console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
 // console.log(record)

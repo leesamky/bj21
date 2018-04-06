@@ -19,7 +19,8 @@ module.exports=function (options){
         rolling:0,
         numberOfPlayer:1,
         backBetRatio:0,
-        adjust:false
+        adjust:false,
+        cutCard:52
 
     }
 
@@ -126,6 +127,10 @@ module.exports=function (options){
         if (options.hasOwnProperty("adjust"))
         {
             playerOptions.adjust = options.adjust;
+        }
+        if (options.hasOwnProperty("cutCard"))
+        {
+            playerOptions.cutCard = options.cutCard;
         }
 
 
