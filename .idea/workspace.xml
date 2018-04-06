@@ -15,50 +15,35 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Blackjack.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="394">
-                  <caret line="716" column="16" selection-start-line="716" selection-start-column="16" selection-end-line="716" selection-end-column="16" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Points.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/Points.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="330">
-                  <caret line="22" selection-start-line="22" selection-end-line="22" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Blackjack.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="282">
-                  <caret line="575" column="38" selection-start-line="575" selection-start-column="38" selection-end-line="575" selection-end-column="38" />
-                  <folding>
-                    <element signature="e#12057#15053#0" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Blackjack.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1605">
+              <caret line="694" lean-forward="true" selection-start-line="691" selection-start-column="3" selection-end-line="694" />
+              <folding>
+                <element signature="n#!!block;n#takeInsurance#0" />
+                <element signature="n#!!block;n#Shuffle#0" />
+                <element signature="n#!!block;n#saveRecord#0" />
+                <element signature="n#!!block;n#Log#0" />
+                <element signature="n#!!block;n#DealCard#0" />
+                <element signature="n#!!block;n#addRC#0" />
+                <element signature="n#!!block;n#PrintHand#0" />
+                <element signature="n#!!block;n#InitializeDeck#0" />
+                <element signature="n#!!block;n#PlayDealerHand#0" />
+                <element signature="n#!!block;n#PlayPlayerHand#0" />
+                <element signature="n#!!block;n#PlayThePlayer#0" />
+                <element signature="n#!!block;n#EvaluateHand#0" />
+                <element signature="n#!!block;n#RunAGame#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>oneDeckSplitsNoDASTrusy</find>
       <find>Two</find>
       <find>twoDecksH17Trusy</find>
       <find>H17</find>
@@ -88,6 +73,7 @@
       <find>count</find>
       <find>Shuffle()</find>
       <find>players</find>
+      <find>inclu</find>
     </findStrings>
     <replaceStrings>
       <replace>splits</replace>
@@ -244,7 +230,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="337605000" />
+    <option name="totallyTimeSpent" value="340169000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
@@ -625,13 +611,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Points.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AdjustPlay.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -681,10 +660,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Points.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Blackjack.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="716" column="16" selection-start-line="716" selection-start-column="16" selection-end-line="716" selection-end-column="16" />
+        <state relative-caret-position="1605">
+          <caret line="694" lean-forward="true" selection-start-line="691" selection-start-column="3" selection-end-line="694" />
+          <folding>
+            <element signature="n#!!block;n#takeInsurance#0" />
+            <element signature="n#!!block;n#Shuffle#0" />
+            <element signature="n#!!block;n#saveRecord#0" />
+            <element signature="n#!!block;n#Log#0" />
+            <element signature="n#!!block;n#DealCard#0" />
+            <element signature="n#!!block;n#addRC#0" />
+            <element signature="n#!!block;n#PrintHand#0" />
+            <element signature="n#!!block;n#InitializeDeck#0" />
+            <element signature="n#!!block;n#PlayDealerHand#0" />
+            <element signature="n#!!block;n#PlayPlayerHand#0" />
+            <element signature="n#!!block;n#PlayThePlayer#0" />
+            <element signature="n#!!block;n#EvaluateHand#0" />
+            <element signature="n#!!block;n#RunAGame#0" />
+          </folding>
         </state>
       </provider>
     </entry>

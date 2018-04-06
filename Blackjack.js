@@ -9,11 +9,11 @@ var deck=[]
 var CSMDeck=[]
 var RC=0
 
-function takeInsurance(options){
+function TakeInsurance(options){
     if(options.offerInsurance){
         if(options.count){
             if(options.count.system==='HiLo'){
-                let TC=RC/(52*deck.length)
+                let TC=RC/(deck.length/52)
                 if(TC>=3){
                     return true
                 }
@@ -366,7 +366,7 @@ function RunAGame(options){
         Log('Shuffle')
         Log('first ten cards in the deck:',deck.slice(0,10),deck.length)
     }else{
-        if(deck.length<Math.max(options.cutCard,options.numberOfPlayer*10)){//was 13
+        if(deck.length<options.cutCard){//was 13
             Log('Shuffle')
             Shuffle(options)
         }
@@ -404,7 +404,10 @@ function RunAGame(options){
             obj.TC=RC / (deck.length / 52)
             obj.RC=RC
         }
-        obj.cardsLeft=deck.length
+        if(!options.CSM){
+            obj.cardsLeft=deck.length
+        }
+
         const dealerCards=[]
 
         dealerCards.push(DealCard(options))//only one card
@@ -447,9 +450,12 @@ function RunAGame(options){
 
             Log(`inital two player cards:   -player ${playerHand[0].cards}, -dealer one card ${dealerCards} `)
             if(dealerCards[0]===1&&!playerBlackjack){
-                if(options.offerInsurance&&options.count&&options.count.trueCount>=3){
-                    playerHand[0].insurance=(playerHand[0].actingBet+playerHand[0].backBet)/2
-                    Log('place insurance')
+                if(options.offerInsurance){
+                    if(TakeInsurance(options)){
+                        playerHand[0].insurance=(playerHand[0].actingBet+playerHand[0].backBet)/2
+                        Log('place insurance')
+                    }
+
                 }
             }
 
@@ -512,7 +518,9 @@ function RunAGame(options){
             obj.TC=RC / (deck.length / 52)
             obj.RC=RC
         }
-        obj.cardsLeft=deck.length
+        if(!options.CSM){
+            obj.cardsLeft=deck.length
+        }
         const dealerCards=[]
         dealerCards.push(DealCard(options))
         dealerCards.push(DealCard(options,false))
@@ -559,10 +567,11 @@ function RunAGame(options){
 
             Log(`inital two cards:   -player ${playerHand[0].cards}, -dealer ${dealerCards} `)
             if(dealerCards[0]===1&&!playerBlackjack){//insurance
-                if(options.offerInsurance&&options.count&&options.count.trueCount>=3){
+                if(TakeInsurance(options)){
                     playerHand[0].insurance=(playerHand[0].actingBet+playerHand[0].backBet)/2
                     Log('place insurance')
                 }
+
             }
 
             let bust=true
@@ -607,7 +616,7 @@ function RunAGame(options){
         }
         obj.win=win
 
-
+        Log(JSON.stringify(obj,null,2))
 
         // console.log(JSON.stringify(obj,null,2))
 
@@ -691,22 +700,22 @@ var  verboseLog=false
 
 // module.exports=HouseEdge
 
-let numTrials=20000
+let numTrials=5000
 let handsPerTrial=10000
-let gameOptions=GameOptions({
+let options={
     hitSoft17: false,
-    surrender: false,
-    doubleRange:[9,11],
+    surrender: 'late',
+    doubleRange:[0,21],
     doubleAfterSplit: true,
-    resplitAces: false,
-    offerInsurance: false,
+    resplitAces: true,
+    offerInsurance: true,
     numberOfDecks: 6,
     maxSplitHands: 4,
-    // count: {system:'HiLo',trueCount:0,RC:0},
-    count:false,
+    count: {system:'REKO',trueCount:0,RC:0},
+    // count:false,
     hitSplitedAce:false,
-    EuropeanNoHoldCard:true,
-    CSM:true,
+    EuropeanNoHoldCard:false,
+    CSM:false,
     fiveDragon:false,//no yet
     charlie:false,
     blackjackPayout:1.5,
@@ -714,10 +723,11 @@ let gameOptions=GameOptions({
     rolling:0,
     numberOfPlayer:1,
     backBetRatio:0,
-    adjust:false,
+    adjust:true,
     cutCard:20,
-})
-
+}
+options.cutCard=Math.max(options.cutCard,options.numberOfPlayer*10)
+const gameOptions=GameOptions(options)
 console.log(gameOptions)
 
 console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
