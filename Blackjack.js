@@ -61,7 +61,9 @@ function Shuffle(options){
 }
 var initialBet=100
 
-const record={}
+const record={
+
+}
 function saveRecord(dealer,player,result,trueCount){
     if(record[[dealer,player]]===undefined){
         record[[dealer,player]]={}
@@ -76,6 +78,20 @@ function saveRecord(dealer,player,result,trueCount){
             record[[dealer,player]][trueCount].hand+=1
 
         }
+    }
+}
+
+function LogREKO(RC,win){
+
+    if(record[RC]===undefined){
+        record[RC]={
+            win:win,
+            hand:1
+        }
+
+    }else{
+        record[RC].win+=win
+        record[RC].hand+=1
     }
 }
 
@@ -434,23 +450,46 @@ function RunAGame(options){
     }
     //
     //
-    //     //betting system set here
-    //     if(trueCount>=4){
-    //         betAmount*=4
-    //     }else if(trueCount>=2){
-    //         betAmount*=2
-    //     }else if(trueCount<=3){
-    //         betAmount/=2
-    //     }
-    // }
+        //betting system set here
+    if(_.includes(options.count.system,'REKO')){
+        let spread=0
+        if((options.numberOfDecks>=4)&&(options.numberOfDecks<=6)){
+            if(RC<=0){
+                spread=1
+            }else if(RC===1){
+                spread=1.5
+            }else if(RC===2){
+                spread=2
+            }else if(RC===3){
+                spread=2.5
+            }
+            else if(RC===4){
+                spread=3
+            }else if(RC===5){
+                spread=3.5
+            }
+            else{
+                spread=4
+            }
+            for(let i=0;i<betAmount.length;i++){
+                betAmount[i]*=spread
+            }
+
+
+        }
+    }
+
 
 
     if(options.EuropeanNoHoldCard){
         const obj={
 
-            players:[]
+            players:[],
+            totalBet:0
+
 
         }
+
         if(options.count){
             obj.TC=RC / (deck.length / 52)
             obj.RC=RC
@@ -475,6 +514,7 @@ function RunAGame(options){
         for(let player=0;player<options.numberOfPlayer;player++){
             const playerHand=[]
             const hand={actingBet:betAmount[player],backBet:betAmount[player]*options.backBetRatio,cards:[]}
+            obj.totalBet+=(hand.actingBet+hand.backBet)
             hand.cards.push(DealCard(options))
             hand.cards.push(DealCard(options))
 
@@ -519,7 +559,7 @@ function RunAGame(options){
 
             for(let hand=0;hand<playerHand.length;hand++){
 
-                if(playerHand[hand].insurance||((HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
+                if(playerHand[hand].insurance||(!playerBlackjack&&(HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
                     bust=false
                 }
             }
@@ -563,7 +603,9 @@ function RunAGame(options){
         //the order needs to be observed
         const obj={
 
-            players:[]
+            players:[],
+            totalBet:0
+
 
         }
         if(options.count){
@@ -590,6 +632,7 @@ function RunAGame(options){
         for(let player=0;player<options.numberOfPlayer;player++){
             const playerHand=[]
             const hand={actingBet:betAmount[player],backBet:betAmount[player]*options.backBetRatio,cards:[]}
+            obj.totalBet+=(hand.actingBet+hand.backBet)
             hand.cards.push(DealCard(options))
             hand.cards.push(DealCard(options))
 
@@ -641,7 +684,7 @@ function RunAGame(options){
 
             for(let hand=0;hand<playerHand.length;hand++){
 
-                if((playerHand[hand].insurance!==undefined)||((HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
+                if((playerHand[hand].insurance!==undefined)||(!playerBlackjack&&(HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
                     bust=false
                 }
             }
@@ -726,16 +769,22 @@ function HouseEdge(numTrials,handsPerTrial,options){
     for (var trial = 0; trial < numTrials; trial++)
     {
         var runningTotal = 0;
+        var totalBet=0
 
         for (var i = 0; i < handsPerTrial; i++)
         {
             // Here's where you control and can evaluation different options
-            runningTotal += RunAGame(options).win;
+            const result=RunAGame(options)
+
+            LogREKO(result.RC,result.win)
+
+            runningTotal += result.win;
+            totalBet+=result.totalBet
             Log("Running total " + runningTotal);
             Log("");
         }
 
-        simulationResults.push((((100 * runningTotal) / handsPerTrial) / (initialBet+initialBet*options.backBetRatio)/(options.numberOfPlayer)));
+        simulationResults.push((((100 * runningTotal) ) / (totalBet)/(options.numberOfPlayer)));
     }
 // console.log(simulationResults)
 // Calculate stddev and average
@@ -753,7 +802,7 @@ global.verboseLog=false
 // module.exports=HouseEdge
 
 let numTrials=10000
-let handsPerTrial=500
+let handsPerTrial=5000
 let OPTIONS={
     hitSoft17: false,
     surrender: 'late',
@@ -776,21 +825,20 @@ let OPTIONS={
     numberOfPlayer:1,
     backBetRatio:0,
     adjust:true,
-    cutCard:30,
+    cutCard:80,
 }
 OPTIONS.cutCard=Math.max(OPTIONS.cutCard,OPTIONS.numberOfPlayer*10)
 const gameOptions=GameOptions(OPTIONS)
 console.log(gameOptions)
 
 console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
-// console.log(record)
 
-// _.forEach(record,function(obj,key){
-//     _.forEach(obj,function(v,k){
-//         record[key][k]=v.result/v.hand
-//     })
-//
-// })
+
+_.forEach(record,function(obj,key){
+    record[key]=[obj.win/obj.hand,100*obj.hand/(numTrials*handsPerTrial)]
+
+})
+console.log(record)
 
 // console.log(record)
 
