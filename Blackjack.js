@@ -18,12 +18,15 @@ function TakeInsurance(options){
                     return true
                 }
             }else if(options.count.system==='REKO'){
-                if(RC>=3){
+                if((options.numberOfDecks===6)&&(RC>=3)){
+                    return true
+                }else if((options.numberOfDecks===8)&&(RC>=4)){
                     return true
                 }
             }
             else if(options.count.system==='FELT'){
-                if(RC>=6){
+                let TC=RC/(deck.length/52)
+                if(TC>=6){
                     return true
                 }
             }
@@ -49,6 +52,8 @@ function Shuffle(options){
             }else if(options.numberOfDecks===8){
                 RC=-27
             }
+        }else{
+            RC=0
         }
     }
 
@@ -108,7 +113,7 @@ function DealCard(options,show=true){
                     RC+=2
                 }else if((card===1)||(card===10)){
                     RC-=2
-                }else if((card===2)&&(card===7)){
+                }else if((card===2)||(card===7)){
                     RC++
                 }
             }
@@ -139,7 +144,7 @@ function AddRC(card,options){
                 RC+=2
             }else if((card===1)||(card===10)){
                 RC-=2
-            }else if((card===2)&&(card===7)){
+            }else if((card===2)||(card===7)){
                 RC++
             }
         }
@@ -411,6 +416,7 @@ function RunAGame(options){
         Log('first ten cards in the deck:',deck.slice(0,10),deck.length)
     }else{
         if(deck.length<options.cutCard){//was 13
+            Log(deck.length)
             Log('Shuffle')
             Shuffle(options)
         }
@@ -423,6 +429,7 @@ function RunAGame(options){
         options.count.trueCount = trueCount
         options.count.RC=RC
         Log(`True Count: ${trueCount.toFixed(2)}`)
+        Log(`RC: ${RC}`)
 
     }
     //
@@ -486,6 +493,7 @@ function RunAGame(options){
                 playerObj.TC=TC
                 playerObj.RC=RC
                 options.count.trueCount=TC
+                options.count.RC=RC
             }
 
             let playerBlackjack=(playerHand.length===1)&&(playerHand[0].cards.length===2)&&(HandTotal(playerHand[0].cards).total===21)
@@ -562,11 +570,13 @@ function RunAGame(options){
             obj.TC=RC / (deck.length / 52)
             obj.RC=RC
         }
+        Log(JSON.stringify(obj,null,2))
         if(!options.CSM){
             obj.cardsLeft=deck.length
         }
         const dealerCards=[]
         dealerCards.push(DealCard(options))
+
         dealerCards.push(DealCard(options,false))
 
         //
@@ -705,7 +715,7 @@ function HouseEdge(numTrials,handsPerTrial,options){
     // Holds the aggregate result from each run of X hands
 
     InitializeDeck(options)
-    console.log(RC)
+    // console.log(RC)
     CSMDeck=_.clone(deck)
 
     var simulationResults = [];
@@ -738,12 +748,12 @@ function HouseEdge(numTrials,handsPerTrial,options){
 
 
 }
-var  verboseLog=false
+global.verboseLog=false
 
 // module.exports=HouseEdge
 
-let numTrials=1
-let handsPerTrial=1000
+let numTrials=10000
+let handsPerTrial=20000
 let OPTIONS={
     hitSoft17: false,
     surrender: 'late',
@@ -753,7 +763,7 @@ let OPTIONS={
     offerInsurance: true,
     numberOfDecks: 6,
     maxSplitHands: 4,
-    count: {system:'REKO',trueCount:0,RC:0},
+    count: {system:'FELT',trueCount:0,RC:0},
     // count:false,
     hitSplitedAce:false,
     EuropeanNoHoldCard:false,
@@ -766,7 +776,7 @@ let OPTIONS={
     numberOfPlayer:1,
     backBetRatio:0,
     adjust:true,
-    cutCard:20,
+    cutCard:30,
 }
 OPTIONS.cutCard=Math.max(OPTIONS.cutCard,OPTIONS.numberOfPlayer*10)
 const gameOptions=GameOptions(OPTIONS)

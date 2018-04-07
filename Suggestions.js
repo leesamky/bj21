@@ -33,6 +33,7 @@ const Stand=require('./Stand')
 const Surrender=require('./Surrender')
 const Hit=require('./Hit')
 
+
 module.exports=function (playerCards,dealerCard,handCount,dealerCheckedBlackJack,dealerHasBlackJack,options){
     // console.log(playerCards)
     // console.log(dealerCard)
@@ -100,6 +101,7 @@ module.exports=function (playerCards,dealerCard,handCount,dealerCheckedBlackJack
     else if(Hit(playerCards,dealerCard,handValue,handCount,playerOptions)){
         return 'hit'
     }else{
+        console.log(playerCards,dealerCard,handCount,dealerCheckedBlackJack,dealerHasBlackJack,options)
         throw Error('no matches')
     }
 
