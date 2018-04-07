@@ -18,7 +18,7 @@ module.exports=function (playerCards, dealerCard, handValue, handCount, dealerCh
             return result
         }
     }
-    else if(options.count.system==='HiLo'){
+    else if(_.includes(options.count.system,'HiLo')){
         let result=HiLo(playerCards, dealerCard, handValue, handCount, dealerCheckedBlackjack, options)
         if(result!==null){
             if(global.verboseLog){
@@ -26,7 +26,7 @@ module.exports=function (playerCards, dealerCard, handValue, handCount, dealerCh
             }
             return result
         }
-    }else if(options.count.system==='FELT'){
+    }else if(_.includes(options.count.system,'FELT')){
         let result=FELT(playerCards, dealerCard, handValue, handCount, dealerCheckedBlackjack, options)
         if(result!==null){
             if(global.verboseLog){

@@ -11,20 +11,20 @@ var RC=0
 
 function TakeInsurance(options){
     if(options.offerInsurance){
-        if(options.count){
-            if(options.count.system==='HiLo'){
+        if(options.count!==undefined){
+            if(_.includes(options.count.system,'HiLo')){
                 let TC=RC/(deck.length/52)
                 if(TC>=3){
                     return true
                 }
-            }else if(options.count.system==='REKO'){
+            }else if(_.includes(options.count.system,'REKO')){
                 if((options.numberOfDecks===6)&&(RC>=3)){
                     return true
                 }else if((options.numberOfDecks===8)&&(RC>=4)){
                     return true
                 }
             }
-            else if(options.count.system==='FELT'){
+            else if(_.includes(options.count.system,'FELT')){
                 let TC=RC/(deck.length/52)
                 if(TC>=6){
                     return true
@@ -40,7 +40,7 @@ function TakeInsurance(options){
 
 function Shuffle(options){
     if(options.count!==undefined){
-        if(options.count.system==='REKO'){
+        if(_.includes(options.count.system,'REKO')){
             if(options.numberOfDecks===1){
                 RC=-1
             }else if(options.numberOfDecks===2){
@@ -95,20 +95,20 @@ function DealCard(options,show=true){
     let card=deck.pop()
     if(show){
         if(options.count){
-            if(options.count.system==='HiLo'){
+            if(_.includes(options.count.system,'HiLo')){
                 if((card>=2)&&(card<=6)){
                     RC++
                 }else if((card===1)||(card===10)){
                     RC--
                 }
-            }else if(options.count.system==='REKO'){
+            }else if(_.includes(options.count.system,'REKO')){
                 if((card>=2)&&(card<=7)){
                     RC++
                 }else if((card===1)||(card===10)){
                     RC--
                 }
             }
-            else if(options.count.system==='FELT'){
+            else if(_.includes(options.count.system,'FELT')){
                 if((card>=3)&&(card<=6)){
                     RC+=2
                 }else if((card===1)||(card===10)){
@@ -126,20 +126,20 @@ function DealCard(options,show=true){
 
 function AddRC(card,options){
     if(options.count){
-        if(options.count.system==='HiLo'){
+        if(_.includes(options.count.system,'HiLo')){
             if((card>=2)&&(card<=6)){
                 RC++
             }else if((card===1)||(card===10)){
                 RC--
             }
-        }else if(options.count.system==='REKO'){
+        }else if(_.includes(options.count.system,'REKO')){
             if((card>=2)&&(card<=7)){
                 RC++
             }else if((card===1)||(card===10)){
                 RC--
             }
         }
-        else if(options.count.system==='FELT'){
+        else if(_.includes(options.count.system,'FELT')){
             if((card>=3)&&(card<=6)){
                 RC+=2
             }else if((card===1)||(card===10)){
@@ -172,7 +172,7 @@ function InitializeDeck(options){
     }
     shuffle(deck)
     if(options.count!==undefined){
-        if(options.count.system==='REKO'){
+        if(_.includes(options.count.system,'REKO')){
 
             if(options.numberOfDecks===1){
                 RC=-1
@@ -753,7 +753,7 @@ global.verboseLog=false
 // module.exports=HouseEdge
 
 let numTrials=10000
-let handsPerTrial=20000
+let handsPerTrial=500
 let OPTIONS={
     hitSoft17: false,
     surrender: 'late',
@@ -763,7 +763,7 @@ let OPTIONS={
     offerInsurance: true,
     numberOfDecks: 6,
     maxSplitHands: 4,
-    count: {system:'FELT',trueCount:0,RC:0},
+    count: {system:'REKO',trueCount:0,RC:0},
     // count:false,
     hitSplitedAce:false,
     EuropeanNoHoldCard:false,

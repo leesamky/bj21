@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="693741dd-49b4-4a2c-a3a4-06e0756a4aed" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/FELT.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HiLo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/REKO.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AdjustPlay.js" beforeDir="false" afterPath="$PROJECT_DIR$/AdjustPlay.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Blackjack.js" beforeDir="false" afterPath="$PROJECT_DIR$/Blackjack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Suggestions.js" beforeDir="false" afterPath="$PROJECT_DIR$/Suggestions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/REKO.js" beforeDir="false" afterPath="$PROJECT_DIR$/REKO.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,11 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Blackjack.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Blackjack.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="765" column="24" selection-start-line="765" selection-start-column="24" selection-end-line="765" selection-end-column="24" />
+            <state relative-caret-position="6090">
+              <caret line="755" column="21" lean-forward="true" selection-start-line="755" selection-start-column="21" selection-end-line="755" selection-end-column="21" />
               <folding>
                 <element signature="n#!!block;n#saveRecord#0" />
                 <element signature="n#!!block;n#Log#0" />
@@ -44,23 +39,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="REKO.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/REKO.js">
+      <file leaf-file-name="Suggestions.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Suggestions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="298" column="38" lean-forward="true" selection-start-line="298" selection-start-column="38" selection-end-line="298" selection-end-column="38" />
+            <state relative-caret-position="58">
+              <caret line="34" selection-start-line="34" selection-end-line="34" />
               <folding>
-                <element signature="e#685#3344#0" />
+                <element signature="n#!!block;n#Points#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdjustPlay.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AdjustPlay.js">
+      <file leaf-file-name="REKO.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/REKO.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+            <state relative-caret-position="-4381">
+              <caret line="5" column="152" selection-start-line="5" selection-start-column="152" selection-end-line="5" selection-end-column="152" />
             </state>
           </provider>
         </entry>
@@ -68,8 +63,8 @@
       <file leaf-file-name="HiLo.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HiLo.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1860">
-              <caret line="124" column="24" lean-forward="true" selection-start-line="124" selection-start-column="24" selection-end-line="124" selection-end-column="24" />
+            <state relative-caret-position="585">
+              <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -78,9 +73,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>H17</find>
-      <find>19</find>
-      <find>false</find>
       <find>Soft</find>
       <find>one</find>
       <find>S17</find>
@@ -108,6 +100,9 @@
       <find>inclu</find>
       <find>&gt;=</find>
       <find>True Count</find>
+      <find>hit</find>
+      <find>REKO</find>
+      <find>'R'</find>
     </findStrings>
     <replaceStrings>
       <replace>splits</replace>
@@ -124,8 +119,12 @@
       <replace>options.backBetRatio</replace>
       <replace>hit</replace>
       <replace>&lt;=</replace>
+      <replace>stand</replace>
       <replace>RC</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -165,11 +164,11 @@
         <option value="$PROJECT_DIR$/GameOptions.js" />
         <option value="$PROJECT_DIR$/Suggestions.js" />
         <option value="$PROJECT_DIR$/HiLo.js" />
-        <option value="$PROJECT_DIR$/AdjustPlay.js" />
         <option value="$PROJECT_DIR$/test.js" />
         <option value="$PROJECT_DIR$/FELT.js" />
-        <option value="$PROJECT_DIR$/Blackjack.js" />
         <option value="$PROJECT_DIR$/REKO.js" />
+        <option value="$PROJECT_DIR$/Blackjack.js" />
+        <option value="$PROJECT_DIR$/AdjustPlay.js" />
       </list>
     </option>
   </component>
@@ -269,22 +268,23 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="355618000" />
+    <option name="totallyTimeSpent" value="362807000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="TypeScript" order="11" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12083333" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" side_tool="true" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="TypeScript" order="11" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12083333" />
+      <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32968536" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
@@ -299,7 +299,6 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32968536" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -648,23 +647,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Suggestions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
-          <folding>
-            <element signature="n#!!block;n#Points#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HiLo.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1860">
-          <caret line="124" column="24" lean-forward="true" selection-start-line="124" selection-start-column="24" selection-end-line="124" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -681,22 +663,46 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/FELT.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
+        <state relative-caret-position="618">
           <caret line="81" column="21" selection-start-line="81" selection-start-column="21" selection-end-line="81" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HiLo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/REKO.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4381">
+          <caret line="5" column="152" selection-start-line="5" selection-start-column="152" selection-end-line="5" selection-end-column="152" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AdjustPlay.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <caret line="25" column="13" lean-forward="true" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Suggestions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+          <folding>
+            <element signature="n#!!block;n#Points#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Blackjack.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="765" column="24" selection-start-line="765" selection-start-column="24" selection-end-line="765" selection-end-column="24" />
+        <state relative-caret-position="6090">
+          <caret line="755" column="21" lean-forward="true" selection-start-line="755" selection-start-column="21" selection-end-line="755" selection-end-column="21" />
           <folding>
             <element signature="n#!!block;n#saveRecord#0" />
             <element signature="n#!!block;n#Log#0" />
@@ -708,16 +714,6 @@
             <element signature="e#9916#12442#0" />
             <element signature="n#!!block;n#standardDeviation#0" />
             <element signature="n#!!block;n#average#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/REKO.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="298" column="38" lean-forward="true" selection-start-line="298" selection-start-column="38" selection-end-line="298" selection-end-column="38" />
-          <folding>
-            <element signature="e#685#3344#0" />
           </folding>
         </state>
       </provider>
