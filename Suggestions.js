@@ -52,6 +52,7 @@ module.exports=function (playerCards,dealerCard,handCount,dealerCheckedBlackJack
     //to do Hi Lo
 
     if(playerOptions.count&&options.adjust){
+        // console.log('in')
 
         let result=AdjustPlay(playerCards,dealerCard,handValue,handCount,dealerCheckedBlackJack,playerOptions)
 

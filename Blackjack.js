@@ -4,10 +4,12 @@ const fs=require('fs')
 const _=require('lodash')
 const GameOptions=require('./GameOptions')
 const BackPlayer=require('./Back_player')
-
+const Spread=require('./Spread')
 var deck=[]
 var CSMDeck=[]
 var RC=0
+const xl=require('excel4node')
+const wb=new xl.Workbook()
 
 function TakeInsurance(options){
     if(options.offerInsurance){
@@ -59,7 +61,7 @@ function Shuffle(options){
 
     deck=_.shuffle(CSMDeck)
 }
-var initialBet=100
+
 
 const record={
 
@@ -92,6 +94,22 @@ function LogREKO(RC,win){
     }else{
         record[RC].win+=win
         record[RC].hand+=1
+    }
+}
+
+function LogPair(RC,win,playerCard,dealerCard){
+    if(record[playerCard,playerCard,dealerCard]===undefined){
+        record[playerCard,playerCard,dealerCard]={}
+    }else {
+        if(record[playerCard,playerCard,dealerCard][RC]===undefined){
+            record[playerCard,playerCard,dealerCard][RC]={
+                win:win,
+                hand:1
+            }
+        }else{
+            record[playerCard,playerCard,dealerCard][RC].win+=win
+            record[playerCard,playerCard,dealerCard][RC].hand+=1
+        }
     }
 }
 
@@ -412,16 +430,16 @@ function EvaluateHand(playerHand, dealerCards, options){
 function RunAGame(options){
 
 
-    let betAmount=[initialBet]//config the bet
-    // console.log(betAmount)
-    if(betAmount.length<options.numberOfPlayer){
-        betAmount=[]
-        for(let player=0;player<options.numberOfPlayer;player++){
-            betAmount.push(initialBet)
-        }
-    }// if player more than one then put every one same bet as default
+    // let betAmount=[initialBet]//config the bet
+    // // console.log(betAmount)
+    // if(betAmount.length<options.numberOfPlayer){
+    //     betAmount=[]
+    //     for(let player=0;player<options.numberOfPlayer;player++){
+    //         betAmount.push(initialBet)
+    //     }
+    // }// if player more than one then put every one same bet as default
 
-    let trueCount=0
+
     
 
     //check if we need to reshuffle
@@ -439,7 +457,7 @@ function RunAGame(options){
     }
 
 
-    //If using counting system, set up here
+    //TC,RC for Betting
     if(options.count) {
         trueCount = RC / (deck.length / 52)
         options.count.trueCount = trueCount
@@ -448,36 +466,23 @@ function RunAGame(options){
         Log(`RC: ${RC}`)
 
     }
-    //
-    //
-        //betting system set here
-    if(_.includes(options.count.system,'REKO')){
-        let spread=0
-        if((options.numberOfDecks>=4)&&(options.numberOfDecks<=6)){
-            if(RC<=0){
-                spread=1
-            }else if(RC===1){
-                spread=1.5
-            }else if(RC===2){
-                spread=2
-            }else if(RC===3){
-                spread=2.5
-            }
-            else if(RC===4){
-                spread=3
-            }else if(RC===5){
-                spread=3.5
-            }
-            else{
-                spread=4
-            }
-            for(let i=0;i<betAmount.length;i++){
+
+    //betting system set here
+    let betAmount=_.clone(options.betAmount)
+    Log(`betAmount ${betAmount}`)
+    if(options.spread){//todo
+        let spread=Spread(options)
+        Log(`spread ${spread}`)
+        if(spread!==1){
+            for (let i=0;i<betAmount.length;i++){
                 betAmount[i]*=spread
             }
-
-
         }
+        Log(`betAmount ${betAmount}`)
+
     }
+
+
 
 
 
@@ -522,6 +527,7 @@ function RunAGame(options){
             players.push(playerHand)
         }
 
+
         for(let player=0;player<options.numberOfPlayer;player++){
             const playerObj={
                 playerHands:[]
@@ -559,7 +565,7 @@ function RunAGame(options){
 
             for(let hand=0;hand<playerHand.length;hand++){
 
-                if(playerHand[hand].insurance||(!playerBlackjack&&(HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
+                if(playerHand[hand].insurance||((HandTotal(playerHand[hand].cards).total<=21)&&(!playerHand[hand].surrender))){
                     bust=false
                 }
             }
@@ -664,10 +670,13 @@ function RunAGame(options){
 
             Log(`inital two cards:   -player ${playerHand[0].cards}, -dealer ${dealerCards} `)
             if(dealerCards[0]===1&&!playerBlackjack){//insurance
-                if(TakeInsurance(options)){
-                    playerHand[0].insurance=(playerHand[0].actingBet+playerHand[0].backBet)/2
-                    Log('place insurance')
+                if(options.offerInsurance){
+                    if(TakeInsurance(options)){
+                        playerHand[0].insurance=(playerHand[0].actingBet+playerHand[0].backBet)/2
+                        Log('place insurance')
+                    }
                 }
+
 
             }
 
@@ -774,7 +783,13 @@ function HouseEdge(numTrials,handsPerTrial,options){
         for (var i = 0; i < handsPerTrial; i++)
         {
             // Here's where you control and can evaluation different options
-            const result=RunAGame(options)
+            let result
+            try{
+                result=RunAGame(options)
+            }catch(e){
+                continue
+            }
+
 
             LogREKO(result.RC,result.win)
 
@@ -789,6 +804,7 @@ function HouseEdge(numTrials,handsPerTrial,options){
 // console.log(simulationResults)
 // Calculate stddev and average
     console.timeEnd('PlayBlackJack');
+    // console.log(simulationResults)
     return simulationResults
     console.log("Average:" + average(simulationResults) + "%");
     console.log("StdDev:" + standardDeviation(simulationResults) + "%");
@@ -805,17 +821,17 @@ let numTrials=10000
 let handsPerTrial=5000
 let OPTIONS={
     hitSoft17: false,
-    surrender: 'late',
-    doubleRange:[0,21],
+    surrender: 'early10',
+    doubleRange:[9,11],
     doubleAfterSplit: true,
-    resplitAces: true,
+    resplitAces: false,
     offerInsurance: true,
     numberOfDecks: 6,
-    maxSplitHands: 4,
+    maxSplitHands: 3,
     count: {system:'REKO',trueCount:0,RC:0},
     // count:false,
     hitSplitedAce:false,
-    EuropeanNoHoldCard:false,
+    EuropeanNoHoldCard:true,
     CSM:false,
     fiveDragon:false,//no yet
     charlie:false,
@@ -825,20 +841,92 @@ let OPTIONS={
     numberOfPlayer:1,
     backBetRatio:0,
     adjust:true,
-    cutCard:80,
+    cutCard:100,
+    spread:false,
+    betAmount:[100]
 }
 OPTIONS.cutCard=Math.max(OPTIONS.cutCard,OPTIONS.numberOfPlayer*10)
+if(OPTIONS.betAmount.length<OPTIONS.numberOfPlayer){
+    let bet=[]
+    for(let i=0;i<OPTIONS.numberOfPlayer;i++){
+        bet.push(OPTIONS.betAmount[0])
+    }
+    OPTIONS.betAmount=bet
+}
 const gameOptions=GameOptions(OPTIONS)
 console.log(gameOptions)
+console.log(numTrials*handsPerTrial/10000)
 
 console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
 
 
-_.forEach(record,function(obj,key){
-    record[key]=[obj.win/obj.hand,100*obj.hand/(numTrials*handsPerTrial)]
+function recordResult(options,numTrials,handsPerTrial){
+    _.forEach(record,function(obj,key){
+        record[key]=[obj.win/obj.hand,100*obj.hand/(numTrials*handsPerTrial)]
 
-})
-console.log(record)
+    })
+
+    let arr=[]
+    _.forEach(record,function(array,index){
+        arr.push([Number(index),...array])
+    })
+
+    arr=_.orderBy(arr,function(a){
+        return a[0]
+    },['asc'])
+    for(let i=0;i<arr.length;i++){
+        let tmp=arr.slice(0,i)
+        let sum=tmp.reduce(function(sum,value){
+            return sum+value[2]
+        },0)
+        arr[i].push(sum)
+    }
+    // console.log(arr)
+
+
+    const ws=wb.addWorksheet('sheet 1')
+
+
+    ws.cell(1,1).string('TC')
+    ws.cell(1,2).string('EV')
+    ws.cell(1,3).string('ODD')
+    ws.cell(1,4).string('TOTAL')
+
+
+    ws.cell(1,6).string('Total hands')
+    ws.cell(1,7).number(numTrials*handsPerTrial/10000)
+    let line=3
+    _.forEach(gameOptions,function(o,k){
+        ws.cell(line,6).string(k)
+        ws.cell(line,7).string(o.toString())
+        line++
+    })
+
+
+//
+    ws.cell
+    for(let i=2;i<arr.length+2;i++){
+        ws.cell(i,1).number(arr[i-2][0])
+        ws.cell(i,2).string(arr[i-2][1].toFixed(4))
+        ws.cell(i,3).string(arr[i-2][2].toFixed(4))
+        ws.cell(i,4).string(arr[i-2][3].toFixed(4))
+
+    }
+
+
+
+    wb.write('result.xlsx')
+}
+
+
+
+
+
+recordResult(gameOptions,numTrials,handsPerTrial)
+
+
+
+
 
 // console.log(record)
 

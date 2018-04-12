@@ -3,10 +3,41 @@ module.exports=function(playerCards, dealerCard, handValue, handCount, dealerChe
     const canSplit = (playerCards[0] === playerCards[1]) && (playerCards.length === 2) && (handCount < options.maxSplitHands);
     const canDouble = ((playerCards.length === 2) && ((handCount === 1) || options.doubleAfterSplit)) &&
         ((handValue.total >= options.doubleRange[0]) && (handValue.total <= options.doubleRange[1]));
-    const canSurrender = ((_.includes(options.surrender,'early')) || (options.surrender === "late")) && (playerCards.length === 2) && (handCount === 1) ;
+    const canSurrender = ((_.includes(options.surrender,'early')) || (options.surrender === "late")) && (playerCards.length === 2) && (handCount === 1)&&(handValue.soft===false) ;
     const RC=options.count.RC
     if(options.count.system==='REKO'){
+        if((RC<-8)){
+            if((options.surrender==='early10')&&canSurrender&&(handValue.soft===false)){
+                if((dealerCard===10)&&(handValue.total===14)){
+                    return 'hit'
+                }else if((dealerCard===9)&&(handValue.total===16)){
+                    return 'hit'
+                }
+            }
+
+
+            if((dealerCard===2)&&(handValue.total===13)){
+                return 'hit'
+            }
+        }
+        if(RC>-8){
+            if(!canSurrender&&handValue.soft===false){
+                if((dealerCard===10)&&(handValue.total===16)){
+                    return 'stand'
+                }
+            }
+        }
+
+
+
         if(RC>=2){
+            if((options.surrender==='early10')&&canSurrender){
+                if((dealerCard===10)&&(handValue.total===13)){
+                    return 'surrender'
+                }else if((dealerCard===9)&&(handValue.total===15)){
+                    return 'surrender'
+                }
+            }
             if(canSurrender&&handValue.soft===false){
                 if((dealerCard===9)&&(handValue.total===15)){
                     return 'surrender'
@@ -27,15 +58,21 @@ module.exports=function(playerCards, dealerCard, handValue, handCount, dealerChe
                         return 'double'
                     }else if((dealerCard===6)&&(handValue.total===19)){
                         return 'double'
+                    }else if((dealerCard===2)&&(handValue.total===18)){
+                        return 'double'
+                    }else if((dealerCard===2)&&(handValue.total===17)){
+                        return 'double'
+                    }else if((dealerCard===4)&&(handValue.total===19)){
+                        return 'double'
                     }
 
                 }else{
-                    if((dealerCard===1)&&(handValue.total===11)){
+                    if((dealerCard===1)&&(handValue.total===11)&&options.EuropeanNoHoldCard===false){
                         return 'double'
-                    }else if((dealerCard===1)&&(handValue.total===10)){
+                    }else if((dealerCard===1)&&(handValue.total===10)&&options.EuropeanNoHoldCard===false){
                         return 'double'
                     }
-                    else if((dealerCard===10)&&(handValue.total===10)){
+                    else if((dealerCard===10)&&(handValue.total===10)&&options.EuropeanNoHoldCard===false){
                         return 'double'
                     }else if((dealerCard===2)&&(handValue.total===9)){
                         return 'double'

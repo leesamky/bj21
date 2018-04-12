@@ -20,7 +20,9 @@ module.exports=function (options){
         numberOfPlayer:1,
         backBetRatio:0,
         adjust:false,
-        cutCard:52
+        cutCard:52,
+        spread:false,
+        betAmount:[100]
 
     }
 
@@ -131,6 +133,14 @@ module.exports=function (options){
         if (options.hasOwnProperty("cutCard"))
         {
             playerOptions.cutCard = options.cutCard;
+        }
+        if (options.hasOwnProperty("spread"))
+        {
+            playerOptions.spread = options.spread;
+        }
+        if (options.hasOwnProperty("betAmount"))
+        {
+            playerOptions.betAmount = options.betAmount;
         }
 
 

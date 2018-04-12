@@ -7,6 +7,14 @@ module.exports=function (playerCards,dealerCard,handValue,handCount,options){
         return false
     }
 
+    if(options.EuropeanNoHoldCard){
+        if((dealerCard===10)&&(playerCards[0]!==1)){
+            return false
+        }else if(dealerCard===1){
+            return false
+        }
+    }
+
     switch(playerCards[0]){
         case 1:
             //always split aces
