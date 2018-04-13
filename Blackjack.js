@@ -98,17 +98,17 @@ function LogREKO(RC,win){
 }
 
 function LogPair(RC,win,playerCard,dealerCard){
-    if(record[playerCard,playerCard,dealerCard]===undefined){
-        record[playerCard,playerCard,dealerCard]={}
+    if(record[[playerCard,playerCard,dealerCard]]===undefined){
+        record[[playerCard,playerCard,dealerCard]]={}
     }else {
-        if(record[playerCard,playerCard,dealerCard][RC]===undefined){
-            record[playerCard,playerCard,dealerCard][RC]={
+        if(record[[playerCard,playerCard,dealerCard]][RC]===undefined){
+            record[[playerCard,playerCard,dealerCard]][RC]={
                 win:win,
                 hand:1
             }
         }else{
-            record[playerCard,playerCard,dealerCard][RC].win+=win
-            record[playerCard,playerCard,dealerCard][RC].hand+=1
+            record[[playerCard,playerCard,dealerCard]][RC].win+=win
+            record[[playerCard,playerCard,dealerCard]][RC].hand+=1
         }
     }
 }
@@ -527,6 +527,9 @@ function RunAGame(options){
             players.push(playerHand)
         }
 
+        // console.log(players[0][0].cards)
+
+
 
         for(let player=0;player<options.numberOfPlayer;player++){
             const playerObj={
@@ -783,13 +786,10 @@ function HouseEdge(numTrials,handsPerTrial,options){
         for (var i = 0; i < handsPerTrial; i++)
         {
             // Here's where you control and can evaluation different options
-            let result
-            try{
-                result=RunAGame(options)
-            }catch(e){
-                continue
-            }
+            let result =RunAGame(options)
 
+            // console.log(JSON.stringify(result,null,2))
+            // LogPair(RC,result.win,result.players[0].playerHands[0][0].cards[0],result.dealer[0])
 
             LogREKO(result.RC,result.win)
 
@@ -818,7 +818,7 @@ global.verboseLog=false
 // module.exports=HouseEdge
 
 let numTrials=10000
-let handsPerTrial=5000
+let handsPerTrial=200000
 let OPTIONS={
     hitSoft17: false,
     surrender: 'early10',
@@ -881,7 +881,7 @@ function recordResult(options,numTrials,handsPerTrial){
         },0)
         arr[i].push(sum)
     }
-    // console.log(arr)
+    console.log(arr)
 
 
     const ws=wb.addWorksheet('sheet 1')
@@ -928,5 +928,5 @@ recordResult(gameOptions,numTrials,handsPerTrial)
 
 
 
-// console.log(record)
+
 
