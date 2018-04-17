@@ -8,6 +8,11 @@ module.exports=function (playerCards,dealerCard,handValue,handCount,options){
         return false
     }
 
+    //for testing split
+    // else{
+    //     return true
+    // }
+
     switch(playerCards[0]){
         case 1:
             //always split aces

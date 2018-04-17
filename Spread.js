@@ -8,15 +8,12 @@ module.exports=function(options){
 
             if((options.numberOfDecks>=4)&&(options.numberOfDecks<=6)){
 
-                if(RC<-10){
+                if(RC<-5){
                     options.backBet=false
                     options.backBetRatio=0
-                }else if(RC<0){
+                }else {
                     options.backBet=true
                     options.backBetRatio=5
-                }else{
-                    options.backBet=true
-                    options.backBetRatio=10
                 }
                 // if(RC<=0){
                 //     spread=1
