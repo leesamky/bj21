@@ -782,231 +782,239 @@ function average(data){
     var avg = sum / data.length;
     return avg;
 }
-
-
-function HouseEdge(numTrials,handsPerTrial,options){
-    // Holds the aggregate result from each run of X hands
-
-    InitializeDeck(options)
-    // console.log(RC)
-    CSMDeck=_.clone(deck)
-
-    var simulationResults = [];
-
-// Snap the time
-    console.time('PlayBlackJack');
-
-    for (var trial = 0; trial < numTrials; trial++)
-    {
-        var runningTotal = 0;
-        var totalBet=0
-
-        for (var i = 0; i < handsPerTrial; i++)
-        {
-            // Here's where you control and can evaluation different options
-            let result =RunAGame(options)
-
-            // console.log(JSON.stringify(result,null,2))
-            // LogPair(RC,result.win,result.players[0].playerHands[0][0].cards[0],result.dealer[0])
-            LogPair(result)
-            // LogREKO(result.RC,result.win)
-
-            runningTotal += result.win;
-            totalBet+=result.totalBet
-            Log("Running total " + runningTotal);
-            Log("");
-        }
-
-        simulationResults.push((((100 * runningTotal) ) / (totalBet)/(options.numberOfPlayer)));
-    }
-// console.log(simulationResults)
-// Calculate stddev and average
-    console.timeEnd('PlayBlackJack');
-    // console.log(simulationResults)
-    return simulationResults
-    console.log("Average:" + average(simulationResults) + "%");
-    console.log("StdDev:" + standardDeviation(simulationResults) + "%");
-
-
-
-
-}
 global.verboseLog=false
 
-// module.exports=HouseEdge
+module.exports.RunAGame=RunAGame
+module.exports.SetUp=function(options){
+    InitializeDeck(options)
 
-let numTrials=300000
-let handsPerTrial=10000
-let OPTIONS={
-    hitSoft17: false,
-    surrender: 'early10',
-    doubleRange:[9,11],
-    doubleAfterSplit:true,
-    resplitAces: false,
-    offerInsurance: true,
-    numberOfDecks: 6,
-    maxSplitHands: 3,
-    count: {system:'REKO',trueCount:0,RC:0},
-    // count:false,
-    hitSplitedAce:false,
-    EuropeanNoHoldCard:true,
-    CSM:false,
-    fiveDragon:false,//no yet
-    charlie:false,
-    blackjackPayout:1.5,
-    backBet:false,
-    rolling:0.01,
-    numberOfPlayer:1,
-    backBetRatio:0,
-    adjust:true,
-    cutCard:120,
-    spread:true,
-    betAmount:[10]
-}
-OPTIONS.cutCard=Math.max(OPTIONS.cutCard,OPTIONS.numberOfPlayer*10)
-if(OPTIONS.betAmount.length<OPTIONS.numberOfPlayer){
-    let bet=[]
-    for(let i=0;i<OPTIONS.numberOfPlayer;i++){
-        bet.push(OPTIONS.betAmount[0])
-    }
-    OPTIONS.betAmount=bet
-}
-const gameOptions=GameOptions(OPTIONS)
-console.log(gameOptions)
-// console.log(numTrials*handsPerTrial/10000)
-//
-// console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
-
-ROR(1000,10000,gameOptions)
-function recordResult(options,numTrials,handsPerTrial){
-    _.forEach(record,function(obj,key){
-        record[key]=[obj.win/obj.hand,100*obj.hand/(numTrials*handsPerTrial)]
-
-    })
-
-    let arr=[]
-    _.forEach(record,function(array,index){
-        arr.push([Number(index),...array])
-    })
-
-    arr=_.orderBy(arr,function(a){
-        return a[0]
-    },['asc'])
-    for(let i=0;i<arr.length;i++){
-        let tmp=arr.slice(0,i)
-        let sum=tmp.reduce(function(sum,value){
-            return sum+value[2]
-        },0)
-        arr[i].push(sum)
-    }
-    console.log(arr)
-
-
-    const ws=wb.addWorksheet('sheet 1')
-
-
-    ws.cell(1,1).string('TC')
-    ws.cell(1,2).string('EV')
-    ws.cell(1,3).string('ODD')
-    ws.cell(1,4).string('TOTAL')
-
-
-    ws.cell(1,6).string('Total hands')
-    ws.cell(1,7).number(numTrials*handsPerTrial/10000)
-    let line=3
-    _.forEach(gameOptions,function(o,k){
-        ws.cell(line,6).string(k)
-        ws.cell(line,7).string(o.toString())
-        line++
-    })
-
-
-//
-    ws.cell
-    for(let i=2;i<arr.length+2;i++){
-        ws.cell(i,1).number(arr[i-2][0])
-        ws.cell(i,2).string(arr[i-2][1].toFixed(4))
-        ws.cell(i,3).string(arr[i-2][2].toFixed(4))
-        ws.cell(i,4).string(arr[i-2][3].toFixed(4))
-
-    }
-
-
-
-    wb.write('RC.xlsx')
-}
-
-function recordPairByRC(){
-    _.forEach(record,function(obj,name){
-        let ws=wb.addWorksheet(name)
-        ws.cell(1,1).string('RC')
-        ws.cell(1,2).string('WIN')
-        ws.cell(1,3).string('HAND')
-        ws.cell(1,4).string('EV')
-        let row=2
-        _.forEach(obj,function(result,RC){
-            // console.log(RC)
-            ws.cell(row,1).string(RC)
-            ws.cell(row,2).number(result.win)
-            ws.cell(row,3).number(result.hand)
-            ws.cell(row,4).string((result.win/result.hand).toFixed(4))
-            row++
-        })
-
-
-    })
-    wb.write('NDAS.xlsx')
-    console.log('write to test.xlsx')
-}
-
-
-// recordPairByRC()
-
-// console.log(record)
-
-
-recordResult(gameOptions,numTrials,handsPerTrial)
-
-
-function ROR(rounds,bankroll,options){
-
-    const target=bankroll*2
-    console.log(target)
-    // console.log(RC)
     CSMDeck=_.clone(deck)
-    const results={
-        win:0,
-        lose:0,
-        hands:[]
-    }
-
-    for(let round=0;round<rounds;round++){
-        InitializeDeck(options)
-        CSMDeck=_.clone(deck)
-        let bankRoll=bankroll
-        let hand=0
-        while((bankRoll<=target)&&(bankRoll>0)){
-            let result=RunAGame(options)
-            LogREKO(result.RC,result.win)
-            bankRoll+=result.win
-            hand+=options.numberOfPlayer
-            // console.log(bankRoll)
-        }
-        if(bankRoll<=0){
-            results.lose+=1
-
-        }else{
-            results.win+=1
-        }
-        results.hands.push(hand)
-
-    }
-    results.win=results.win/rounds
-    results.lose=results.lose/rounds
-    results.hands=average(results.hands)
-    console.log(results)
 }
 
 
-
-
+// function HouseEdge(numTrials,handsPerTrial,options){
+//     // Holds the aggregate result from each run of X hands
+//
+//     InitializeDeck(options)
+//     // console.log(RC)
+//     CSMDeck=_.clone(deck)
+//
+//     var simulationResults = [];
+//
+// // Snap the time
+//     console.time('PlayBlackJack');
+//
+//     for (var trial = 0; trial < numTrials; trial++)
+//     {
+//         var runningTotal = 0;
+//         var totalBet=0
+//
+//         for (var i = 0; i < handsPerTrial; i++)
+//         {
+//             // Here's where you control and can evaluation different options
+//             let result =RunAGame(options)
+//
+//             // console.log(JSON.stringify(result,null,2))
+//             // LogPair(RC,result.win,result.players[0].playerHands[0][0].cards[0],result.dealer[0])
+//             LogPair(result)
+//             // LogREKO(result.RC,result.win)
+//
+//             runningTotal += result.win;
+//             totalBet+=result.totalBet
+//             Log("Running total " + runningTotal);
+//             Log("");
+//         }
+//
+//         simulationResults.push((((100 * runningTotal) ) / (totalBet)/(options.numberOfPlayer)));
+//     }
+// // console.log(simulationResults)
+// // Calculate stddev and average
+//     console.timeEnd('PlayBlackJack');
+//     // console.log(simulationResults)
+//     return simulationResults
+//     console.log("Average:" + average(simulationResults) + "%");
+//     console.log("StdDev:" + standardDeviation(simulationResults) + "%");
+//
+//
+//
+//
+// }
+//
+//
+// // module.exports=HouseEdge
+//
+// let numTrials=300000
+// let handsPerTrial=10000
+// let OPTIONS={
+//     hitSoft17: false,
+//     surrender: 'early10',
+//     doubleRange:[9,11],
+//     doubleAfterSplit:true,
+//     resplitAces: false,
+//     offerInsurance: true,
+//     numberOfDecks: 6,
+//     maxSplitHands: 3,
+//     count: {system:'REKO',trueCount:0,RC:0},
+//     // count:false,
+//     hitSplitedAce:false,
+//     EuropeanNoHoldCard:true,
+//     CSM:false,
+//     fiveDragon:false,//no yet
+//     charlie:false,
+//     blackjackPayout:1.5,
+//     backBet:false,
+//     rolling:0.01,
+//     numberOfPlayer:1,
+//     backBetRatio:0,
+//     adjust:true,
+//     cutCard:120,
+//     spread:true,
+//     betAmount:[10]
+// }
+// OPTIONS.cutCard=Math.max(OPTIONS.cutCard,OPTIONS.numberOfPlayer*10)
+// if(OPTIONS.betAmount.length<OPTIONS.numberOfPlayer){
+//     let bet=[]
+//     for(let i=0;i<OPTIONS.numberOfPlayer;i++){
+//         bet.push(OPTIONS.betAmount[0])
+//     }
+//     OPTIONS.betAmount=bet
+// }
+// const gameOptions=GameOptions(OPTIONS)
+// console.log(gameOptions)
+// // console.log(numTrials*handsPerTrial/10000)
+// //
+// // console.log(average(HouseEdge(numTrials,handsPerTrial,gameOptions)))
+//
+// ROR(1000,10000,gameOptions)
+// function recordResult(options,numTrials,handsPerTrial){
+//     _.forEach(record,function(obj,key){
+//         record[key]=[obj.win/obj.hand,100*obj.hand/(numTrials*handsPerTrial)]
+//
+//     })
+//
+//     let arr=[]
+//     _.forEach(record,function(array,index){
+//         arr.push([Number(index),...array])
+//     })
+//
+//     arr=_.orderBy(arr,function(a){
+//         return a[0]
+//     },['asc'])
+//     for(let i=0;i<arr.length;i++){
+//         let tmp=arr.slice(0,i)
+//         let sum=tmp.reduce(function(sum,value){
+//             return sum+value[2]
+//         },0)
+//         arr[i].push(sum)
+//     }
+//     console.log(arr)
+//
+//
+//     const ws=wb.addWorksheet('sheet 1')
+//
+//
+//     ws.cell(1,1).string('TC')
+//     ws.cell(1,2).string('EV')
+//     ws.cell(1,3).string('ODD')
+//     ws.cell(1,4).string('TOTAL')
+//
+//
+//     ws.cell(1,6).string('Total hands')
+//     ws.cell(1,7).number(numTrials*handsPerTrial/10000)
+//     let line=3
+//     _.forEach(gameOptions,function(o,k){
+//         ws.cell(line,6).string(k)
+//         ws.cell(line,7).string(o.toString())
+//         line++
+//     })
+//
+//
+// //
+//     ws.cell
+//     for(let i=2;i<arr.length+2;i++){
+//         ws.cell(i,1).number(arr[i-2][0])
+//         ws.cell(i,2).string(arr[i-2][1].toFixed(4))
+//         ws.cell(i,3).string(arr[i-2][2].toFixed(4))
+//         ws.cell(i,4).string(arr[i-2][3].toFixed(4))
+//
+//     }
+//
+//
+//
+//     wb.write('RC.xlsx')
+// }
+//
+// function recordPairByRC(){
+//     _.forEach(record,function(obj,name){
+//         let ws=wb.addWorksheet(name)
+//         ws.cell(1,1).string('RC')
+//         ws.cell(1,2).string('WIN')
+//         ws.cell(1,3).string('HAND')
+//         ws.cell(1,4).string('EV')
+//         let row=2
+//         _.forEach(obj,function(result,RC){
+//             // console.log(RC)
+//             ws.cell(row,1).string(RC)
+//             ws.cell(row,2).number(result.win)
+//             ws.cell(row,3).number(result.hand)
+//             ws.cell(row,4).string((result.win/result.hand).toFixed(4))
+//             row++
+//         })
+//
+//
+//     })
+//     wb.write('NDAS.xlsx')
+//     console.log('write to test.xlsx')
+// }
+//
+//
+// // recordPairByRC()
+//
+// // console.log(record)
+//
+//
+// recordResult(gameOptions,numTrials,handsPerTrial)
+//
+//
+// function ROR(rounds,bankroll,options){
+//
+//     const target=bankroll*2
+//     console.log(target)
+//     // console.log(RC)
+//     CSMDeck=_.clone(deck)
+//     const results={
+//         win:0,
+//         lose:0,
+//         hands:[]
+//     }
+//
+//     for(let round=0;round<rounds;round++){
+//         InitializeDeck(options)
+//         CSMDeck=_.clone(deck)
+//         let bankRoll=bankroll
+//         let hand=0
+//         while((bankRoll<=target)&&(bankRoll>0)){
+//             let result=RunAGame(options)
+//             LogREKO(result.RC,result.win)
+//             bankRoll+=result.win
+//             hand+=options.numberOfPlayer
+//             // console.log(bankRoll)
+//         }
+//         if(bankRoll<=0){
+//             results.lose+=1
+//
+//         }else{
+//             results.win+=1
+//         }
+//         results.hands.push(hand)
+//
+//     }
+//     results.win=results.win/rounds
+//     results.lose=results.lose/rounds
+//     results.hands=average(results.hands)
+//     console.log(results)
+// }
+//
+//
+//
+//
