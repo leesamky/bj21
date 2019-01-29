@@ -4,7 +4,7 @@ const GameOptions=require('../GameOptions')
 const average=require('./average')
 const standardDeviation=require('./standardDeviation')
 
-function ROR(rounds,bankroll,options){
+function ROR(rounds,bankroll,options){//risk of ruin
 
     const target=bankroll*2
     // console.log(target)

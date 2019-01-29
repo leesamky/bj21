@@ -169,6 +169,13 @@ function DealCard(options,show=true){
                     RC++
                 }
             }
+            else if(_.includes(options.count.system,'OWN')){
+                if(card===1){
+                    RC-=2
+                }else if((card===4)||(card===5)){
+                    RC+=1
+                }
+            }
         }
 
     }
@@ -407,11 +414,17 @@ function EvaluateHand(playerHand, dealerCards, options){
                 }
             }
             else if(dealerBlackjack){//assume dealer bj take split and double
-                Log('Dealer has blackjack - you lost all the bet including split and double')
-                win-=(playerHand[hand].actingBet+playerHand[hand].backBet)
-                if(options.rolling){
-                    win+=options.rolling*(playerHand[hand].actingBet+playerHand[hand].backBet)
+                if(options.BJpush21&&playerTotal===21){
+                    Log('dealer BJ pushes player 21')
+
+                }else{
+                    Log('Dealer has blackjack - you lost all the bet including split and double')
+                    win-=(playerHand[hand].actingBet+playerHand[hand].backBet)
+                    if(options.rolling){
+                        win+=options.rolling*(playerHand[hand].actingBet+playerHand[hand].backBet)
+                    }
                 }
+
             }
             else if(playerTotal>21){//player bust
                 Log('player bust')

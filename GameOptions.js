@@ -22,7 +22,8 @@ module.exports=function (options){
         adjust:false,
         cutCard:52,
         spread:false,
-        betAmount:[100]
+        betAmount:[100],
+        BJpush21:false
 
     }
 
@@ -141,6 +142,10 @@ module.exports=function (options){
         if (options.hasOwnProperty("betAmount"))
         {
             playerOptions.betAmount = options.betAmount;
+        }
+        if (options.hasOwnProperty("BJpush21"))
+        {
+            playerOptions.BJpush21 = options.BJpush21;
         }
 
 

@@ -37,6 +37,13 @@ module.exports=function(options){
 
             }
         }
+        else if(options.count.system==='OWN'){
+            if(options.count.TC>=1){
+                options.numberOfPlayer=4
+            }else{
+                options.numberOfPlayer=1
+            }
+        }
     }
     return spread
 }

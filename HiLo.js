@@ -3,7 +3,7 @@ module.exports=function(playerCards, dealerCard, handValue, handCount, dealerChe
     const canSplit = (playerCards[0] === playerCards[1]) && (playerCards.length === 2) && (handCount < options.maxSplitHands);
     const canDouble = ((playerCards.length === 2) && ((handCount === 1) || options.doubleAfterSplit)) &&
         ((handValue.total >= options.doubleRange[0]) && (handValue.total <= options.doubleRange[1]));
-    const canSurrender = ((_.includes(options.surrender,'early')) || (options.surrender === "late")) && (playerCards.length === 2) && (handCount === 1);
+    const canSurrender = ((_.includes(options.surrender,'early')) || (options.surrender === "late")) && (playerCards.length === 2) && (handCount === 1) && (!handValue.soft);
     const RC=options.count.RC
     //early surrender
     if(handValue.soft){

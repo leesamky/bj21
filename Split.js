@@ -31,6 +31,9 @@ module.exports=function (playerCards,dealerCard,handValue,handCount,options){
                 if(options.EuropeanNoHoldCard&&(dealerCard===1)){
                     shouldSplit=false
                 }
+                // if(options.BJpush21){
+                //     shouldSplit=true
+                // }
             }
 
             break;
@@ -222,6 +225,9 @@ module.exports=function (playerCards,dealerCard,handValue,handCount,options){
             if(options.EuropeanNoHoldCard&&(_.includes([1,10],dealerCard))){
                 shouldSplit=false
             }
+            // if(options.BJpush21){
+            //     shouldSplit=true
+            // }
 
             break;
 

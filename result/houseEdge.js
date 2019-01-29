@@ -60,7 +60,7 @@ function HouseEdge(numTrials,handsPerTrial,options){
 
 }
 
-let numTrials=300
+let numTrials=20000
 let handsPerTrial=10000
 let OPTIONS={
     hitSoft17: false,
@@ -69,10 +69,10 @@ let OPTIONS={
     doubleAfterSplit:true,
     resplitAces: false,
     offerInsurance: true,
-    numberOfDecks: 6,
-    maxSplitHands: 3,
-    count: {system:'REKO',trueCount:0,RC:0},
-    // count:false,
+    numberOfDecks: 8,
+    maxSplitHands: 4,
+    // count: {system:'REKO',trueCount:0,RC:0},
+    count:false,
     hitSplitedAce:false,
     EuropeanNoHoldCard:true,
     CSM:false,
@@ -86,7 +86,8 @@ let OPTIONS={
     adjust:true,
     cutCard:120,
     spread:false,
-    betAmount:[10]
+    betAmount:[10],
+    BJpush21:false
 }
 OPTIONS.cutCard=Math.max(OPTIONS.cutCard,OPTIONS.numberOfPlayer*10)
 if(OPTIONS.betAmount.length<OPTIONS.numberOfPlayer){

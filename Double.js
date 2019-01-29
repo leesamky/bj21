@@ -252,6 +252,9 @@ module.exports=function (playerCards,dealerCard,handValue,handCount,options){
                                 if((dealerCard===10)&&options.EuropeanNoHoldCard){
                                     shouldDouble=false
                                 }
+                                // if(options.BJpush21){
+                                //     shouldDouble=true
+                                // }
                             }
                         }
                     }
